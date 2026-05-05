@@ -1,0 +1,9 @@
+{
+  "name": "smartbin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static smartBin capstone web application.",
+  "scripts": {
+    "start": "node scripts/start.mjs"
+  }
+}
