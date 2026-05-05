@@ -1,0 +1,230 @@
+0<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>smartBin | About</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../includes/menu.js"></script>
+    <script src="../includes/backtotop.js"></script>
+    <link rel="icon" href="../images/bin.webp">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body class="has-mobile-bottom-nav font-sans text-gray-800 bg-gradient-to-br from-green-50 via-yellow-50 to-white min-h-screen">
+    
+  <!-- Navbar -->
+  <header class="fixed w-full bg-white/80 backdrop-blur shadow-md z-50 transition-all">
+    <nav class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <a href="index.html">
+            <h1 class="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+              <span class="text-green-600 animate-pulse">+</span>
+              <span class="text-black">Tech smart</span>
+              <span class="text-green-600">Bin</span>
+            </h1>
+          </a>
+        </div>
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-6 items-center font-semibold">
+          <a href="index.html" class="text-green-600 hover:text-[#ecbd36] transition">Home</a>
+          <a href="#" class="text-[#ecbd36] hover:text-[#ecbd36] transition">About Us</a>
+          <a href="reward.html" class="text-green-600 font-semibold">Rewards</a>
+          <a href="login.html"
+              class="border-2 border-green-600 hover:border-[#ecbd36] text-green-600 px-4 py-2 rounded-lg text-center hover:bg-[#ecbd36] hover:text-black transition duration-300 shadow hover:scale-105">
+            Login
+          </a>
+        </div>
+        <a href="login.html"
+          class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition"
+          aria-label="Login">
+          <i class="fas fa-user"></i>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <nav class="mobile-bottom-nav md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-green-100 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] px-3 pt-2">
+    <div class="grid grid-cols-3 gap-2 max-w-md mx-auto">
+      <a href="index.html" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-green-700 hover:text-[#ecbd36]">
+        <i class="fas fa-home text-lg"></i>
+        <span class="text-xs">Home</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-[#ecbd36] font-semibold">
+        <i class="fas fa-circle-info text-lg"></i>
+        <span class="text-xs">About</span>
+      </a>
+      <a href="reward.html" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-green-700 hover:text-[#ecbd36]">
+        <i class="fas fa-gift text-lg"></i>
+        <span class="text-xs">Rewards</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="relative min-h-[320px] h-[60vh] flex items-center justify-center">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('../images/trash.webp');">
+      <div class="absolute inset-0 bg-gradient-to-br from-green-700/70 via-yellow-500/30 to-black/40"></div>
+    </div>
+    <div class="relative z-10 text-center text-white px-4">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight drop-shadow-lg animate-fade-in-up">
+        About <span class="text-green-400">+</span>Tech smart<span class="text-yellow-300">Bin</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- About Content -->
+  <section class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-12">
+      <div data-aos="fade-right">
+        <h2 class="text-3xl font-bold mb-4 text-green-700">What is smartBin?</h2>
+        <p class="text-gray-700 text-lg leading-relaxed">
+          smartBin is an IoT-based recycling and rewards system designed to tackle plastic
+          waste in San Jose de Buenavista, Antique. Our goal is to make recycling a habit
+          by making it easy, rewarding, and trackable.
+        </p>
+      </div>
+      <div data-aos="fade-left">
+        <h2 class="text-3xl font-bold mb-4 text-green-700">What it does?</h2>
+        <p class="text-gray-700 text-lg leading-relaxed">
+          The system detects bottles using sensors and associates each detection with a unique Bin ID.
+          Users identify the smartBin by entering its Bin ID to claim points, which can then be redeemed for rewards.
+          Users can also report illegal dumping with photos and GPS.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-gradient-to-br from-green-50 via-yellow-50 to-white">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-12">
+      <div data-aos="fade-right">
+        <h2 class="text-3xl font-bold mb-4 text-green-700">Why it matters?</h2>
+        <p class="text-gray-700 text-lg leading-relaxed">
+          The Philippines generates over 60,000 tons of waste daily, much of it plastic.
+          smartBin motivates recycling, supports government monitoring, and empowers communities.
+        </p>
+      </div>
+      <div data-aos="fade-left">
+        <h2 class="text-3xl font-bold mb-4 text-green-700">Who it’s for?</h2>
+        <p class="text-gray-700 text-lg leading-relaxed">
+          smartBin is designed for students, residents, and local governments. It started at
+          St. Anthony’s College and is scalable to other schools and barangays.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & Vision -->
+  <section class="py-20 bg-white">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-12">
+      <div class="bg-green-50 p-8 rounded-2xl shadow-xl hover:scale-105 transition duration-300" data-aos="fade-right">
+        <div class="flex items-center mb-4">
+          <span class="text-3xl text-green-600 mr-3"><i class="fas fa-bullseye"></i></span>
+          <h2 class="text-2xl font-bold">Our Mission</h2>
+        </div>
+        <p class="text-gray-700 text-lg">
+          To revolutionize waste management through innovative technology and community engagement, 
+          making recycling accessible, rewarding, and measurable for everyone.
+        </p>
+      </div>
+      <div class="bg-yellow-50 p-8 rounded-2xl shadow-xl hover:scale-105 transition duration-300" data-aos="fade-left">
+        <div class="flex items-center mb-4">
+          <span class="text-3xl text-yellow-500 mr-3"><i class="fas fa-eye"></i></span>
+          <h2 class="text-2xl font-bold">Our Vision</h2>
+        </div>
+        <p class="text-gray-700 text-lg">
+          A future where environmental stewardship is seamlessly integrated into daily life, 
+          powered by smart technology and sustained by community participation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team -->
+  <section class="py-20 bg-gradient-to-br from-green-50 via-yellow-50 to-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl sm:text-4xl font-bold text-center mb-10 sm:mb-12 text-green-700" data-aos="fade-up">Our Team</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Team Member -->
+        <div class="group" data-aos="fade-up" data-aos-delay="100">
+          <div class="bg-white rounded-2xl shadow-lg p-4 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="../images/lucbani.webp" class="w-32 h-32 rounded-full mx-auto object-cover mb-4">
+            <div class="text-center">
+              <h3 class="text-xl font-bold">Jasmine R. Lucbani</h3>
+              <p class="text-green-600 font-medium">Project Manager</p>
+            </div>
+          </div>
+        </div>
+        <div class="group" data-aos="fade-up" data-aos-delay="200">
+          <div class="bg-white rounded-2xl shadow-lg p-4 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="../images/castres.webp" class="w-32 h-32 rounded-full mx-auto object-cover mb-4">
+            <div class="text-center">
+              <h3 class="text-xl font-bold">Justine Abner T. Castres</h3>
+              <p class="text-green-600 font-medium">Backend & Hardware</p>
+            </div>
+          </div>
+        </div>
+        <div class="group" data-aos="fade-up" data-aos-delay="300">
+          <div class="bg-white rounded-2xl shadow-lg p-4 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="../images/matillano.webp" class="w-32 h-32 rounded-full mx-auto object-cover mb-4">
+            <div class="text-center">
+              <h3 class="text-xl font-bold">Melody Y. Matillano</h3>
+              <p class="text-green-600 font-medium">Documentation</p>
+            </div>
+          </div>
+        </div>
+        <div class="group" data-aos="fade-up" data-aos-delay="400">
+          <div class="bg-white rounded-2xl shadow-lg p-4 transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+            <img src="../images/osorio.webp" class="w-32 h-32 rounded-full mx-auto object-cover mb-4">
+            <div class="text-center">
+              <h3 class="text-xl font-bold">Jhon Christian T. Osorio</h3>
+              <p class="text-green-600 font-medium">Frontend & UI Design</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Back to Top Button -->
+  <button id="backToTop"
+  class="opacity-0 pointer-events-none fixed bottom-6 right-6 bg-green-600 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all duration-500 hover:bg-[#ecbd36]">
+  <i class="fas fa-arrow-up"></i>
+</button>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true, offset: 100 });
+  </script>
+</body>
+  <!-- Footer -->
+  <footer class="bg-gradient-to-r from-green-700 via-green-500 to-green-700 text-white py-10">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">+Tech smartBin</h3>
+          <p class="text-sm">Making recycling rewarding and accessible for everyone.</p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="index.html" class="hover:text-gray-200">Home</a></li>
+            <li><a href="#" class="hover:text-gray-200">About Us</a></li>
+            <li><a href="reward.html" class="hover:text-gray-200">Rewards</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Contact</h4>
+          <p class="text-sm mb-2">St. Anthony's College</p>
+          <p class="text-sm mb-2">San Jose, Antique</p>
+        </div>
+      </div>
+      <div class="border-t border-white/20 mt-8 pt-8 text-center">
+        <p class="text-sm">© 2025 smartBin Project | All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</html>

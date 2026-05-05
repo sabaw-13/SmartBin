@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>smartBin | Settings</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="../includes/settings.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="icon" href="../images/bin.webp">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link rel="stylesheet" href="../css/style.css">
+    </head>
+    <body class="bg-gray-50">
+        <!-- Header -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-4">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <a href="index_loggedin.html" class="flex items-center text-gray-800 hover:text-green-600 transition-colors text-sm sm:text-base">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Home
+                    </a>
+                    <h1 class="text-lg sm:text-xl font-semibold">Account Settings</h1>
+                    <div class="w-6"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-5 sm:py-8">
+            <div class="max-w-4xl mx-auto">
+                <!-- Settings Navigation -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="border-b">
+                        <nav class="flex overflow-x-auto">
+                            <button onclick="showTab('general')" 
+                                    class="tab-button shrink-0 px-4 sm:px-6 py-4 text-sm font-medium border-b-2 border-green-600">
+                                <i class="fas fa-cog mr-2"></i>General
+                            </button>
+                            <button onclick="showTab('notifications')" 
+                                    class="tab-button shrink-0 px-4 sm:px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-bell mr-2"></i>Notifications
+                            </button>
+                            <button onclick="showTab('security')" 
+                                    class="tab-button shrink-0 px-4 sm:px-6 py-4 text-sm font-medium text-gray-500 hover:text-gray-700">
+                                <i class="fas fa-lock mr-2"></i>Security
+                            </button>
+                        </nav>
+                    </div>
+
+                    <!-- Settings Content -->
+                    <div class="p-4 sm:p-6">
+                        <!-- General Settings -->
+                        <div id="general" class="tab-content">
+                            <div class="space-y-6">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                    <div>
+                                        <h3 class="font-medium">Language</h3>
+                                        <p class="text-sm text-gray-500">Choose your preferred language</p>
+                                    </div>
+                                    <select class="w-full sm:w-auto px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600">
+                                        <option value="en">English</option>
+                                        <option value="fil">Filipino</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Notifications Settings -->
+                        <div id="notifications" class="tab-content hidden">
+                            <div class="space-y-6">
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <h3 class="font-medium">Email Notifications</h3>
+                                        <p class="text-sm text-gray-500">Receive updates via email</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer" checked>
+                                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full 
+                                                    peer-checked:bg-green-600 after:content-[''] after:absolute after:top-0.5 
+                                                    after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 
+                                                    after:transition-all"></div>
+                                    </label>
+                                </div>
+
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <h3 class="font-medium">Push Notifications</h3>
+                                        <p class="text-sm text-gray-500">Get instant updates</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" class="sr-only peer">
+                                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full 
+                                                    peer-checked:bg-green-600 after:content-[''] after:absolute after:top-0.5 
+                                                    after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 
+                                                    after:transition-all"></div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Security Settings -->
+                        <div id="security" class="tab-content hidden">
+                            <div class="space-y-6">
+                                <div>
+                                    <h3 class="font-medium mb-4">Change Password</h3>
+                                    <form onsubmit="handlePasswordChange(event)" class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
+                                            <input type="password" required
+                                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                                            <input type="password" required
+                                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600">
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                                            <input type="password" required
+                                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600">
+                                        </div>
+                                        <button type="submit"
+                                                class="w-full sm:w-auto px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700
+                                                    transition-colors">
+                                            Update Password
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <div class="pt-6 border-t">
+                                    <h3 class="font-medium text-red-600 mb-2">Danger Zone</h3>
+                                    <button onclick="handleDeleteAccount()"
+                                            class="w-full sm:w-auto px-6 py-2 border border-red-600 text-red-600 rounded-lg
+                                                hover:bg-red-50 transition-colors">
+                                        Delete Account
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

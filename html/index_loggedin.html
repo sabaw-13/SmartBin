@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>smartBin | Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script async src="https://docs.opencv.org/4.x/opencv.js"></script>
+  <script src="../includes/profile.js"></script>
+  <script src="../includes/menu.js"></script>
+  <script src="../includes/backtotop.js"></script>
+  <link rel="icon" href="../images/bin.webp">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script type="module">
+    import { auth, db } from "./firebase.js";
+    console.log("Firebase ready:", auth, db);
+  </script>
+</head>
+
+<body class="has-mobile-bottom-nav font-sans text-gray-800 bg-gradient-to-br from-green-50 via-yellow-50 to-white">
+
+  <!-- Navbar -->
+  <header class="fixed w-full bg-white/80 backdrop-blur shadow-md z-50 transition">
+    <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="#">
+        <h1 class="text-2xl sm:text-3xl font-bold flex items-center gap-1">
+          <span class="text-green-600 animate-pulse">+</span>Tech smart<span class="text-green-600">Bin</span>
+        </h1>
+      </a>
+
+      <div class="hidden md:flex space-x-6 items-center font-semibold">
+        <a href="#" class="text-[#ecbd36]">Home</a>
+        <a href="about_loggedin.html" class="text-green-600 hover:text-[#ecbd36] transition">About Us</a>
+        <a href="reward_loggedin.html" class="text-green-600 hover:text-[#ecbd36] transition">Rewards</a>
+
+        <!-- Profile dropdown -->
+        <div class="w-10 h-10 rounded-full overflow-hidden shadow-lg cursor-pointer" onclick="toggleProfileModal()">
+          <img src="../images/user.jpg" alt="User Profile" class="w-full h-full object-cover" />
+        </div>
+      </div>
+
+      <button class="md:hidden w-10 h-10 rounded-full overflow-hidden shadow-lg" onclick="toggleProfileModal()" aria-label="Open profile menu">
+        <img id="mobileProfilePic" src="../images/user.jpg" alt="User Profile" class="w-full h-full object-cover">
+      </button>
+    </nav>
+  </header>
+
+  <nav class="mobile-bottom-nav md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-green-100 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] px-3 pt-2">
+    <div class="grid grid-cols-3 gap-2 max-w-md mx-auto">
+      <a href="#" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-[#ecbd36] font-semibold">
+        <i class="fas fa-home text-lg"></i>
+        <span class="text-xs">Home</span>
+      </a>
+      <a href="about_loggedin.html" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-green-700 hover:text-[#ecbd36]">
+        <i class="fas fa-circle-info text-lg"></i>
+        <span class="text-xs">About</span>
+      </a>
+      <a href="reward_loggedin.html" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-green-700 hover:text-[#ecbd36]">
+        <i class="fas fa-gift text-lg"></i>
+        <span class="text-xs">Rewards</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="relative min-h-[640px] h-screen flex items-center justify-center text-center">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('../images/trash.webp');">
+      <div class="absolute inset-0 bg-gradient-to-br from-green-900/80 via-yellow-600/40 to-black/50"></div>
+    </div>
+    <div class="relative z-10 text-white px-4 sm:px-6 md:px-8">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6">
+        Welcome Back, <span id="heroName" class="text-green-300 drop-shadow-lg">!</span>
+      </h1>
+      
+      <!-- Stats Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto mb-8">
+        <div class="bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-4 sm:p-6 shadow-lg">
+          <p class="text-xs sm:text-sm text-gray-200 mb-2"><i class="fas fa-bottle-water mr-2"></i>Items Recycled</p>
+          <p class="text-3xl sm:text-4xl font-bold text-green-300"><span id="bottleCount">0</span></p>
+          <p class="text-xs text-gray-300">This month</p>
+        </div>
+        <div class="bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-4 sm:p-6 shadow-lg">
+          <p class="text-xs sm:text-sm text-gray-200 mb-2"><i class="fas fa-weight mr-2"></i>Total Weight</p>
+          <p class="text-3xl sm:text-4xl font-bold text-yellow-300"><span id="bottleWeight">0</span>g</p>
+          <p class="text-xs text-gray-300">Combined weight</p>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+        <a href="reward_loggedin.html" class="w-full sm:w-auto">
+          <button
+            class="w-full bg-gradient-to-r from-green-500 via-green-400 to-yellow-400 text-white px-6 sm:px-10 py-3 sm:py-4 rounded-xl font-bold shadow-xl hover:shadow-2xl hover:scale-105 transition duration-300 flex items-center justify-center gap-2">
+            <i class="fas fa-gift"></i>View Rewards
+          </button>
+        </a>
+        <button onclick="openBinModal()"
+          class="w-full bg-white/95 text-green-700 px-6 sm:px-10 py-3 sm:py-4 rounded-xl font-bold shadow-xl hover:shadow-2xl hover:bg-yellow-100 hover:text-green-800 transition duration-300 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-bottle-water"></i>Insert Bottle
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Profile Modal -->
+  <div id="profileModal" class="fixed inset-0 bg-black/50 z-50 hidden">
+    <div class="absolute top-20 left-4 right-4 sm:left-auto sm:right-6 md:right-8 sm:w-72 bg-white rounded-lg shadow-xl">
+      <div class="p-4 border-b flex items-center gap-3">
+        <div class="w-12 h-12 rounded-full overflow-hidden">
+          <img src="../images/user.jpg" alt="User Profile" class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <h3 id="profileName" class="font-semibold text-gray-800">Loading...</h3>
+          <p id="profileEmail" class="text-sm text-gray-500">Loading...</p>
+        </div>
+      </div>
+      <div class="p-2">
+        <a href="profile.html" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">
+          <i class="fas fa-user mr-2"></i> My Profile
+        </a>
+        <a href="settings.html" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">
+          <i class="fas fa-cog mr-2"></i> Settings
+        </a>
+        <button onclick="handleLogout()" class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg">
+          <i class="fas fa-sign-out-alt mr-2"></i> Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bin ID Modal -->
+  <div id="binModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center">
+    <div class="bg-gradient-to-br from-white to-green-50 rounded-2xl shadow-2xl p-5 sm:p-8 w-full max-w-sm mx-4 border-2 border-green-200">
+      <h3 class="text-2xl font-bold mb-6 text-green-700"><i class="fas fa-trash mr-2"></i>Enter Bin ID</h3>
+      <p class="text-gray-600 mb-4 text-sm">Enter your bin ID to start the bottle insertion session</p>
+      <input type="text" id="binId" class="w-full px-4 py-3 border-2 border-green-200 rounded-lg mb-6 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200" placeholder="e.g., BIN-001">
+      <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+        <button onclick="closeBinModal()" class="w-full sm:w-auto px-6 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg font-semibold transition">Cancel</button>
+        <button id="proceedBtn" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg hover:from-green-700 hover:to-green-600 font-bold shadow-md transition">Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timer Modal -->
+  <div id="timerModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center">
+    <div class="bg-gradient-to-br from-green-50 to-white rounded-2xl shadow-2xl p-8 w-96 mx-4 text-center border-2 border-green-200">
+      <h3 class="text-2xl font-bold mb-6 text-green-700">Inserting Bottle</h3>
+      
+      <!-- Timer Display -->
+      <div class="mb-8">
+        <div class="text-6xl font-bold text-green-600 mb-2 font-mono" id="timer">01:00</div>
+        <p class="text-sm text-gray-500">Time remaining</p>
+      </div>
+
+      <p class="mb-6 text-lg font-semibold text-gray-700">
+        Bin: <span id="displayBinId" class="font-bold text-green-600 bg-green-100 px-3 py-1 rounded-lg"></span>
+      </p>
+
+      <!-- LIVE SESSION STATS -->
+      <div class="mb-6 bg-white rounded-lg p-4 border border-green-200">
+        <h4 class="font-bold text-green-700 mb-3 text-left">Session Details</h4>
+        <div class="space-y-2 text-left text-sm">
+          <div class="flex justify-between">
+            <span class="text-gray-600">Bottles inserted:</span>
+            <span class="font-bold text-green-600"><i class="fas fa-bottle-water mr-1"></i><span id="totalBottles">0</span></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-600">Total weight:</span>
+            <span class="font-bold text-green-600"><span id="totalWeight">0</span> g</span>
+          </div>
+          <div class="flex justify-between border-t pt-2">
+            <span class="text-gray-600">Last bottle weight:</span>
+            <span class="font-bold text-yellow-500"><span id="lastWeight">0</span> g</span>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="finishInsertSession()"
+        class="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-500 text-white font-bold rounded-lg hover:from-green-700 hover:to-green-600 shadow-md transition duration-300">
+        <i class="fas fa-check mr-2"></i>Finish Session
+      </button>
+    </div>
+  </div>
+
+  <!-- Firebase & Logic Script -->
+  <script type="module">
+    import { db } from "./firebase.js";
+    import { ref, set, get, onValue, push, update, runTransaction } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    // Get logged-in user
+    const userId = localStorage.getItem("userId");
+    if (!userId) Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        html: '<p style="white-space: pre-wrap; text-align: left;">No logged-in user found. Please log in again.</p>',
+        position: 'top-end',
+        toast: true,
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        background: '#fee2e2'
+    });
+
+    const userRef = ref(db, `users/${userId}`);
+
+    // LOGOUT FUNCTION
+    window.logout = function () {
+      localStorage.removeItem("userId");
+      window.location.href = "../index.html";
+    };
+
+    // UPDATE USER INFO (HERO + NAV + BOTTLE STATS)
+    onValue(userRef, snapshot => {
+      if (!snapshot.exists()) return;
+      const data = snapshot.val();
+      const firstName = (data.fullName || "User").split(" ")[0];
+
+      document.getElementById("heroName").textContent = `${firstName}!`;
+      const bottles = data.bottles || 0;
+      const totalWeight = data.recycling?.totalWeight || 0;
+
+      document.getElementById("bottleCount").textContent = bottles;
+      document.getElementById("bottleWeight").textContent = totalWeight.toFixed(2);
+    });
+
+    // INSERT BOTTLE SESSION
+    let countdownInterval, timeLeft = 60;
+    let currentBinId = null;
+
+    function formatNumberWithCommas(n) { return (Math.round(n) || 0).toLocaleString(); }
+
+    const proceedBtn = document.getElementById("proceedBtn");
+    proceedBtn.addEventListener("click", startInsertSession);
+
+    window.openBinModal = () => document.getElementById("binModal").classList.remove("hidden");
+    window.closeBinModal = () => document.getElementById("binModal").classList.add("hidden");
+
+    async function startInsertSession() {
+      const binId = document.getElementById("binId").value.trim();
+      if (!binId) { 
+        Swal.fire({
+            icon: 'warning',
+            title: 'Invalid Bin ID',
+            html: '<p style="white-space: pre-wrap; text-align: left;">Please enter a valid bin ID.</p>',
+            position: 'top-end',
+            toast: true,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: '#fef3c7'
+        });
+        return; 
+      }
+
+      currentBinId = binId;
+      document.getElementById("displayBinId").textContent = binId;
+      proceedBtn.disabled = true;
+      proceedBtn.textContent = "Waiting for Bin...";
+
+      try {
+        // Initialize bin session
+        await set(ref(db, `bins/${binId}/session`), { bottles: 0, totalWeight: 0, lastWeight: 0, timestamp: Date.now() });
+        await set(ref(db, `bins/${binId}/status/action`), "insert");
+
+        // Wait for bin ready
+        let ready = false, attempts = 0;
+        while (!ready && attempts < 10) {
+          const snap = await get(ref(db, `bins/${binId}/status/ready`));
+          if (snap.exists() && snap.val() === true) { ready = true; break; }
+          await new Promise(r => setTimeout(r, 500));
+          attempts++;
+        }
+
+        if (!ready) {
+          await set(ref(db, `bins/${binId}/status/action`), "done");
+          await set(ref(db, `bins/${binId}/status/ready`), false);
+          Swal.fire({
+            icon: 'warning',
+            title: 'Bin Not Ready',
+            html: '<p style="white-space: pre-wrap; text-align: left;">The bin is not ready. Please make sure the bin is online and try again.</p>',
+            position: 'top-end',
+            toast: true,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: '#fef3c7'
+          });
+          proceedBtn.disabled = false;
+          proceedBtn.textContent = "Proceed";
+          currentBinId = null;
+          return;
+        }
+
+        closeBinModal();
+        document.getElementById("timerModal").classList.remove("hidden");
+        startCountdown();
+
+        const sessionRef = ref(db, `bins/${binId}/session`);
+        onValue(sessionRef, snap => {
+          if (!snap.exists()) return;
+          const data = snap.val();
+          document.getElementById("totalBottles").textContent = data.bottles || 0;
+          document.getElementById("totalWeight").textContent = (data.totalWeight || 0).toFixed(2);
+          document.getElementById("lastWeight").textContent = (data.lastWeight || 0).toFixed(2);
+          if ((data.lastWeight || 0) > 0) resetCountdown();
+        });
+
+      } catch (err) {
+        console.error(err);
+        if (currentBinId) {
+          await set(ref(db, `bins/${currentBinId}/status/action`), "done");
+          await set(ref(db, `bins/${currentBinId}/status/ready`), false);
+        }
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            html: '<p style="white-space: pre-wrap; text-align: left;">Failed to start insert session. Please try again.</p>',
+            position: 'top-end',
+            toast: true,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: '#fee2e2'
+        });
+        proceedBtn.disabled = false;
+        proceedBtn.textContent = "Proceed";
+        currentBinId = null;
+      }
+    }
+
+    // COUNTDOWN TIMER
+    function startCountdown() {
+      timeLeft = 60;
+      document.getElementById("timer").textContent = "01:00";
+      clearInterval(countdownInterval);
+      countdownInterval = setInterval(() => {
+        timeLeft--;
+        const minutes = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+        const seconds = String(timeLeft % 60).padStart(2, "0");
+        document.getElementById("timer").textContent = `${minutes}:${seconds}`;
+        if (timeLeft <= 0) {
+          clearInterval(countdownInterval);
+          Swal.fire({
+            icon: 'info',
+            title: 'Session Ended',
+            html: '<p style="white-space: pre-wrap; text-align: left;">Click OK to finish and compute bottles/weight.</p>',
+            position: 'top-end',
+            toast: false,
+            showConfirmButton: true,
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#16a34a'
+          }).then(() => {
+            if (typeof window.finishInsertSession === 'function') window.finishInsertSession();
+          });
+        }
+      }, 1000);
+    }
+    function resetCountdown() { timeLeft = 60; document.getElementById("timer").textContent = "01:00"; }
+
+    // FINISH INSERT SESSION
+    window.finishInsertSession = async function () {
+      clearInterval(countdownInterval);
+      document.getElementById("timerModal").classList.add("hidden");
+      const binId = currentBinId;
+      currentBinId = null;
+      proceedBtn.disabled = false;
+      proceedBtn.textContent = "Proceed";
+
+      if (!userId || !binId) return Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        html: '<p style="white-space: pre-wrap; text-align: left;">No logged in user or bin found. Please try again.</p>',
+        position: 'top-end',
+        toast: true,
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        background: '#fee2e2'
+      });
+
+      try {
+        await set(ref(db, `bins/${binId}/status/action`), "done");
+        await set(ref(db, `bins/${binId}/status/ready`), false);
+
+        const snapshot = await get(ref(db, `bins/${binId}/session`));
+        let bottles = 0, totalWeight = 0;
+        if (snapshot.exists()) { const d = snapshot.val(); bottles = d.bottles || 0; totalWeight = d.totalWeight || 0; }
+        console.log('🔍 Session data:', { binId, bottles, totalWeight });
+        if (bottles === 0) return Swal.fire({
+          icon: 'warning',
+          title: 'No Bottles',
+          html: '<p style="white-space: pre-wrap; text-align: left;">No bottles were inserted. Session has ended.</p>',
+          position: 'top-end',
+          toast: true,
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          background: '#fef3c7'
+        });
+
+        const userSnapshot = await get(userRef);
+        const prevBottles = userSnapshot.exists() ? (userSnapshot.val().bottles || 0) : 0;
+        const prevWeight = userSnapshot.exists() ? (userSnapshot.val().recycling?.totalWeight || 0) : 0;
+
+        const weightRounded = Math.round((totalWeight || 0) * 100) / 100;
+
+        await update(ref(db, `users/${userId}`), {
+          bottles: prevBottles + bottles,
+          'recycling/totalWeight': prevWeight + weightRounded,
+          'recycling/updatedAt': Date.now()
+        });
+
+        // Record daily aggregate (not per-session) using transactions
+        try {
+          console.log('🔍 finishInsertSession - userId:', userId, '| bottles:', bottles, '| weightRounded:', weightRounded);
+          // Get today's date in local timezone (not UTC)
+          const today = new Date();
+          const year = today.getFullYear();
+          const month = String(today.getMonth() + 1).padStart(2, '0');
+          const day = String(today.getDate()).padStart(2, '0');
+          const dateKey = `${year}-${month}-${day}`;
+          console.log('📅 Today\'s date key:', dateKey);
+
+          // 1) Atomically update user's daily aggregate
+          const userDailyRef = ref(db, `users/${userId}/recycling/daily/${dateKey}`);
+          console.log('📍 User daily path (transaction):', `users/${userId}/recycling/daily/${dateKey}`);
+          const userTxRes = await runTransaction(userDailyRef, (current) => {
+            const prevB = current && Number(current.bottles || 0) || 0;
+            const prevW = current && Number(current.weight || 0) || 0;
+            return {
+              bottles: prevB + Number(bottles),
+              weight: prevW + Number(weightRounded)
+            };
+          });
+          console.log('✅ User daily transaction completed', userTxRes);
+          try {
+            const verifyUserDaily = await get(userDailyRef);
+            console.log('🔁 Verify user daily after tx:', verifyUserDaily.exists() ? verifyUserDaily.val() : null);
+          } catch (e) {
+            console.warn('⚠️ Could not read user daily after tx:', e);
+          }
+
+          // 2) Atomically update bin's daily aggregate
+          const binDailyRef = ref(db, `bins/${binId}/daily/${dateKey}`);
+          console.log('📍 Bin daily path (transaction):', `bins/${binId}/daily/${dateKey}`);
+          const binTxRes = await runTransaction(binDailyRef, (current) => {
+            const prevC = current && Number(current.count || 0) || 0;
+            const prevW = current && Number(current.weight || 0) || 0;
+            return {
+              count: prevC + Number(bottles),
+              weight: prevW + Number(weightRounded)
+            };
+          });
+          console.log('✅ Bin daily transaction completed', binTxRes);
+          try {
+            const verifyBinDaily = await get(binDailyRef);
+            console.log('🔁 Verify bin daily after tx:', verifyBinDaily.exists() ? verifyBinDaily.val() : null);
+          } catch (e) {
+            console.warn('⚠️ Could not read bin daily after tx:', e);
+          }
+        } catch (e) {
+          console.error('❌ Failed to write daily aggregates (transaction):', e);
+        }
+
+        // Update the hero display immediately
+        document.getElementById("bottleCount").textContent = prevBottles + bottles;
+        document.getElementById("bottleWeight").textContent = (prevWeight + weightRounded).toFixed(2);
+
+        Swal.fire({
+            icon: 'success',
+            title: 'Recycling Complete ✓',
+            html: `<p style="white-space: pre-wrap; text-align: center;">You inserted <strong>${bottles}</strong> bottles weighing <strong>${(weightRounded).toFixed(2)}g</strong>.<br><br>Total recycled: <strong>${prevBottles + bottles}</strong> bottles, <strong>${(prevWeight + weightRounded).toFixed(2)}g</strong></p>`,
+            position: 'top-end',
+            toast: true,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: '#dcfce7'
+        });
+
+      } catch (err) {
+        console.error(err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            html: '<p style="white-space: pre-wrap; text-align: left;">Failed to finish the session. Please try again.</p>',
+            position: 'top-end',
+            toast: true,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: '#fee2e2'
+        });
+      }
+    };
+    // PROFILE MODAL
+    if (userId) {
+      const userRef = ref(db, `users/${userId}`);
+      get(userRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const data = snapshot.val();
+          const firstName = (data.fullName || "User").split(" ")[0];
+          document.getElementById("profileName").textContent = firstName;
+          document.getElementById("profileEmail").textContent = data.email || "";
+        }
+      }).catch((err) => {
+        console.error("Error loading user profile:", err);
+      });
+    }
+  </script>
+
+  <footer
+    class="bg-gradient-to-r from-green-700 via-green-500 to-green-700 text-white py-10"
+  >
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-3">+Tech smartBin</h3>
+          <p class="text-sm">
+            Making recycling rewarding and accessible for everyone.
+          </p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-3">Contact</h4>
+          <p class="text-sm">St. Anthony's College</p>
+          <p class="text-sm">San Jose, Antique</p>
+        </div>
+      </div>
+      <div class="border-t border-white/20 mt-8 pt-6 text-center text-sm">
+        © 2025 smartBin Project | All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    AOS.init({ duration: 800, once: true, offset: 100 });
+  </script>
+</body>
+
+</html>

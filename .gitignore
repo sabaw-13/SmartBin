@@ -1,0 +1,24 @@
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor folders
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency/build output, if tooling is added later
+node_modules/
+dist/
+build/
+.cache/
+
+# Local environment files
+.env
+.env.*
+

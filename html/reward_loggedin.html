@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>smartBin | Rewards Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../includes/menu.js"></script>
+    <script src="../includes/backtotop.js"></script>
+    <script src="../includes/profile.js"></script>
+    <link rel="icon" href="../images/bin.webp" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+
+<body class="has-mobile-bottom-nav font-sans text-gray-800">
+
+    <!-- Navbar -->
+    <header class="fixed w-full bg-white/80 backdrop-blur shadow-md z-50">
+        <nav class="container mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="index_loggedin.html">
+                <h1 class="text-2xl sm:text-3xl font-bold">
+                    <span class="text-green-600">+</span>Tech smart<span class="text-green-600">Bin</span>
+                </h1>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-6 items-center font-semibold">
+                <a href="index_loggedin.html" class="text-green-600 hover:text-[#ecbd36] transition">Home</a>
+                <a href="about_loggedin.html" class="text-green-600 hover:text-[#ecbd36] transition">About Us</a>
+                <a href="#" class="text-[#ecbd36] hover:text-[#ecbd36] transition">Rewards</a>
+
+                <!-- Profile Picture (static) -->
+                <div class="w-10 h-10 rounded-full overflow-hidden shadow-lg cursor-pointer hover:scale-110 transition"
+                    onclick="toggleProfileModal()">
+                    <img src="../images/user.jpg" alt="User Profile" class="w-full h-full object-cover" />
+                </div>
+            </div>
+
+            <button class="md:hidden w-10 h-10 rounded-full overflow-hidden shadow-lg" onclick="toggleProfileModal()" aria-label="Open profile menu">
+                <img src="../images/user.jpg" alt="User Profile" class="w-full h-full object-cover" />
+            </button>
+        </nav>
+    </header>
+
+    <nav class="mobile-bottom-nav md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-green-100 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] px-3 pt-2">
+        <div class="grid grid-cols-3 gap-2 max-w-md mx-auto">
+            <a href="index_loggedin.html" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-green-700 hover:text-[#ecbd36]">
+                <i class="fas fa-home text-lg"></i>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="about_loggedin.html" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-green-700 hover:text-[#ecbd36]">
+                <i class="fas fa-circle-info text-lg"></i>
+                <span class="text-xs">About</span>
+            </a>
+            <a href="#" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-[#ecbd36] font-semibold">
+                <i class="fas fa-gift text-lg"></i>
+                <span class="text-xs">Rewards</span>
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative min-h-[320px] h-[45vh] flex items-center justify-center">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('../images/trash.webp');">
+            <div class="absolute inset-0 bg-gradient-to-br from-green-900/85 via-yellow-600/40 to-black/60"></div>
+        </div>
+        <div class="relative z-10 text-center text-white px-4">
+            <h1 class="text-3xl sm:text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
+                My Rewards <span class="text-green-300">Dashboard</span>
+            </h1>
+            <p class="text-lg text-gray-100 drop-shadow">Earn rewards by recycling</p>
+        </div>
+    </section>
+
+
+    <!-- User Info & Stats -->
+    <section class="bg-gradient-to-r from-green-50 to-white py-12 border-b-2 border-green-200">
+        <div class="max-w-4xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center gap-8 mb-8">
+                <div class="w-32 h-32 rounded-full overflow-hidden shadow-lg border-4 border-green-200">
+                    <img id="userProfilePic" src="../images/user.jpg" alt="User Profile"
+                        class="w-full h-full object-cover" />
+                </div>
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl font-bold text-gray-800" id="userName">Welcome back, </h2>
+                    <p class="text-gray-600 mt-1" id="userEmail">@</p>
+                </div>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-2xl border-2 border-green-200 p-6 shadow-md">
+                    <p class="text-gray-600 text-sm mb-2"><i class="fas fa-bottle-water mr-2 text-green-600"></i>Total Bottles Recycled</p>
+                    <p class="text-4xl font-bold text-green-600" id="totalBottles">0</p>
+                </div>
+                <div class="bg-white rounded-2xl border-2 border-yellow-200 p-6 shadow-md">
+                    <p class="text-gray-600 text-sm mb-2"><i class="fas fa-weight mr-2 text-yellow-600"></i>Total Weight</p>
+                    <p class="text-4xl font-bold text-yellow-600"><span id="totalWeight">0</span>g</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="fixed inset-0 bg-black/50 z-50 hidden">
+        <div class="absolute top-20 left-4 right-4 sm:left-auto sm:right-6 md:right-8 sm:w-72 bg-white rounded-lg shadow-xl">
+            <div class="p-4 border-b flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full overflow-hidden">
+                    <img src="../images/user.jpg" alt="User Profile" class="w-full h-full object-cover" />
+                </div>
+                <div>
+                    <h3 id="profileName" class="font-semibold text-gray-800">Loading...</h3>
+                    <p id="profileEmail" class="text-sm text-gray-500">Loading...</p>
+                </div>
+            </div>
+            <div class="p-2">
+                <a href="profile.html" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-user mr-2"></i> My Profile
+                </a>
+                <a href="settings.html" class="block px-4 py-2 hover:bg-gray-100 rounded-lg">
+                    <i class="fas fa-cog mr-2"></i> Settings
+                </a>
+                <button onclick="handleLogout()"
+                    class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg">
+                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Redeem Section -->
+    <section class="bg-gradient-to-b from-gray-50 to-white py-16">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-3">
+                    Redeem your <span class="text-green-600">Recycled Weight</span>
+                </h2>
+                <p class="text-gray-600">Choose rewards that match your recycling contribution</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8" id="redeemOptions">
+                <!-- Filled dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Redemption History -->
+    <section class="bg-gray-50 py-16">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold">
+                    Redemption <span class="text-green-600">History</span>
+                </h2>
+                <p class="text-gray-600 mt-2">Track your reward requests and their status</p>
+            </div>
+            <div class="bg-white rounded-2xl shadow-lg p-6 border-2 border-green-200">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b-2 border-green-600 bg-green-50">
+                                <th class="text-left py-4 px-4 font-semibold text-green-700"><i class="fas fa-gift mr-2"></i>Reward</th>
+                                <th class="text-right py-4 px-4 font-semibold text-green-700">Weight (g)</th>
+                                <th class="text-left py-4 px-4 font-semibold text-green-700">Date</th>
+                                <th class="text-left py-4 px-4 font-semibold text-green-700">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="redemptionHistory">
+                            <tr class="border-b border-gray-200">
+                                <td colspan="4" class="py-4 px-4 text-center text-gray-500">Loading rewards...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Pagination Controls -->
+                <div class="flex items-center justify-between mt-6 px-2">
+                    <p class="text-sm text-gray-600">View your reward claims and approvals</p>
+                    <div class="flex items-center gap-2">
+                        <button id="prevRewardsBtn" onclick="previousRewardsPage()" class="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition">← Prev</button>
+                        <span id="rewardsPageInfo" class="text-sm text-gray-700 font-semibold min-w-[80px] text-center">Page 1</span>
+                        <button id="nextRewardsBtn" onclick="nextRewardsPage()" class="px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition">Next →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gradient-to-r from-green-700 via-green-500 to-green-700 text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-3">+Tech smartBin</h3>
+                    <p class="text-sm">
+                        Making recycling rewarding and accessible for everyone.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-3">Contact</h4>
+                    <p class="text-sm">St. Anthony's College</p>
+                    <p class="text-sm">San Jose, Antique</p>
+                </div>
+            </div>
+            <div class="border-t border-white/20 mt-8 pt-6 text-center text-sm">
+                © 2025 smartBin Project | All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script type="module">
+        import { db } from "./firebase.js";
+        import { ref, get, set, push, onValue, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        const userId = localStorage.getItem("userId");
+        if (!userId) Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            html: '<p style="white-space: pre-wrap; text-align: left;">No logged-in user found. Please log in again.</p>',
+            position: 'top-end',
+            toast: true,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: '#fee2e2'
+        });
+
+        const userRef = ref(db, `users/${userId}`);
+        const rewardsRef = ref(db, `rewards/${userId}`);
+
+        const redemptionRewards = [
+            { name: "Notebook Set", weight: 500, img: "../images/notebook.webp" },
+            { name: "School Supply Kit", weight: 1000, img: "../images/schoolkit.webp" },
+            { name: "Grocery Pack", weight: 1500, img: "../images/grocerypack.webp" },
+        ];
+
+        // --- Load User Info ---
+        function loadUserData() {
+            onValue(userRef, snapshot => {
+                if (!snapshot.exists()) return;
+                const data = snapshot.val();
+                const firstName = (data.fullName || "User").split(" ")[0];
+                document.getElementById("userName").textContent = `Welcome back, ${firstName}!`;
+                document.getElementById("userEmail").textContent = data.email || "";
+                document.getElementById("userProfilePic").src = data.profilePic || "../images/user.jpg";
+                document.getElementById("totalBottles").textContent = data.bottles || 0;
+                const totalWeight = data.recycling?.totalWeight || 0;
+                document.getElementById("totalWeight").textContent = totalWeight.toFixed(2);
+
+                // load redemption options
+                loadRedeemOptions(totalWeight);
+            });
+
+            // Always load rewards history from rewardsRef
+            loadRedemptionHistory();
+        }
+
+        // --- Redemption History (Newest on top) with Pagination ---
+        let allRewardsList = [];
+        let currentRewardsPage = 1;
+        const rewardsPerPage = 10;
+
+        function displayRewardsPage() {
+            const tbody = document.getElementById("redemptionHistory");
+            const start = (currentRewardsPage - 1) * rewardsPerPage;
+            const end = start + rewardsPerPage;
+            const pageRewards = allRewardsList.slice(start, end);
+            
+            if (pageRewards.length === 0) {
+                tbody.innerHTML = '<tr class="border-b border-gray-200"><td colspan="4" class="py-4 px-4 text-center text-gray-500">No rewards requested yet.</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = pageRewards.map(item => `
+                <tr class="border-b border-gray-200 hover:bg-green-50 transition">
+                    <td class="py-3 px-4 text-sm">${item.name}</td>
+                    <td class="py-3 px-4 text-right text-sm font-medium">${item.weight}</td>
+                    <td class="py-3 px-4 text-sm">${new Date(item.requestedAt || item.date).toLocaleDateString()}</td>
+                    <td class="py-3 px-4">
+                        <span class="px-2 py-1 text-xs rounded-full ${
+                            item.status === "accepted"
+                                ? "bg-green-100 text-green-800"
+                                : item.status === "rejected"
+                                    ? "bg-red-100 text-red-800"
+                                    : "bg-yellow-100 text-yellow-800"
+                        }">${item.status}</span>
+                    </td>
+                </tr>
+            `).join('');
+            
+            // Update pagination controls
+            const totalPages = Math.ceil(allRewardsList.length / rewardsPerPage);
+            document.getElementById("prevRewardsBtn").disabled = currentRewardsPage === 1;
+            document.getElementById("nextRewardsBtn").disabled = currentRewardsPage === totalPages;
+            document.getElementById("rewardsPageInfo").textContent = `Page ${currentRewardsPage} of ${totalPages}`;
+        }
+
+        window.previousRewardsPage = function() {
+            if (currentRewardsPage > 1) {
+                currentRewardsPage--;
+                displayRewardsPage();
+            }
+        };
+
+        window.nextRewardsPage = function() {
+            const totalPages = Math.ceil(allRewardsList.length / rewardsPerPage);
+            if (currentRewardsPage < totalPages) {
+                currentRewardsPage++;
+                displayRewardsPage();
+            }
+        };
+
+        function loadRedemptionHistory() {
+            onValue(rewardsRef, (snapshot) => {
+                allRewardsList = [];
+                if (!snapshot.exists()) {
+                    currentRewardsPage = 1;
+                    displayRewardsPage();
+                    return;
+                }
+
+                snapshot.forEach((child) => {
+                    const item = child.val();
+                    allRewardsList.push(item);
+                });
+
+                // Sort newest first
+                allRewardsList.sort((a, b) => {
+                    const aDate = new Date(a.requestedAt || a.date).getTime();
+                    const bDate = new Date(b.requestedAt || b.date).getTime();
+                    return bDate - aDate; // descending order
+                });
+
+                // Reset to page 1 and display
+                currentRewardsPage = 1;
+                displayRewardsPage();
+            });
+        }
+
+
+        // --- Reward Options ---
+        function loadRedeemOptions(totalWeight) {
+            const container = document.getElementById("redeemOptions");
+            container.innerHTML = "";
+            onValue(rewardsRef, snapshot => {
+                const pendingRewards = [];
+                snapshot.forEach(child => {
+                    const item = child.val();
+                    if (item.status === "pending") pendingRewards.push(item.name);
+                });
+
+                redemptionRewards.forEach(reward => {
+                    const alreadyPending = pendingRewards.includes(reward.name);
+                    const canRedeem = totalWeight >= reward.weight && !alreadyPending;
+
+                    const card = document.createElement("div");
+                    card.className = "bg-white rounded-lg shadow-lg p-4 hover:scale-105 transition";
+                    card.innerHTML = `
+          <div class="h-48 mb-4 rounded-lg overflow-hidden">
+            <img src="${reward.img}" alt="${reward.name}" class="w-full h-full object-cover"/>
+          </div>
+          <h3 class="font-semibold text-lg mb-2">${reward.name}</h3>
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <span class="text-green-600 font-bold">${reward.weight} g</span>
+            <button ${canRedeem ? "" : "disabled"}
+              onclick="handleRedeem(${reward.weight}, '${reward.name}')"
+              class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 ${canRedeem ? "" : "opacity-50 cursor-not-allowed"}">
+              <i class="fas fa-gift"></i> Redeem
+            </button>
+          </div>`;
+                    container.appendChild(card);
+                });
+            });
+        }
+
+        // --- Handle Redeem (User requests reward) ---
+        window.handleRedeem = async function (weight, name) {
+
+            const result = await Swal.fire({
+                title: "Redeem Reward?",
+                text: `Redeem ${weight}g for ${name}?`,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Yes, redeem",
+                cancelButtonText: "Cancel",
+            });
+
+            if (!result.isConfirmed) return;
+
+            const snapshot = await get(userRef);
+            if (!snapshot.exists()) return;
+
+            const data = snapshot.val();
+            const currentWeight = data.recycling?.totalWeight || 0;
+
+            if (currentWeight < weight)
+                return Swal.fire({
+                    icon: 'error',
+                    title: 'Insufficient Weight',
+                    html: '<p style="white-space: pre-wrap; text-align: left;">You do not have enough recycled weight to redeem this reward.</p>',
+                    position: 'top-end',
+                    toast: true,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#fee2e2'
+                });
+
+            // Get today's date in YYYY-MM-DD format (local timezone)
+            const today = new Date();
+            const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            
+            console.log(`Storing reward with date key: ${todayKey}`);
+
+            // Save request under rewards
+            const newRewardRef = push(rewardsRef);
+            await set(newRewardRef, {
+                userId,
+                name,
+                weight,
+                status: "pending",
+                date: Date.now(),
+                requestedAt: new Date().toISOString()
+            });
+            
+            console.log(`Reward saved to rewards/${userId}/${newRewardRef.key}`);
+
+            // Record daily rewards claimed in redeemed path
+            try {
+                const redeemedRef = ref(db, `users/${userId}/redeemed/${todayKey}`);
+                console.log(`🔍 Attempting to fetch existing redeemed rewards from: users/${userId}/redeemed/${todayKey}`);
+                
+                const redeemedSnap = await get(redeemedRef);
+                console.log(`✓ Redeemed snapshot exists:`, redeemedSnap.exists());
+                
+                if (redeemedSnap.exists()) {
+                  console.log(`✓ Current redeemed data at ${todayKey}:`, redeemedSnap.val());
+                }
+                
+                const existingRewards = redeemedSnap.exists() ? (Array.isArray(redeemedSnap.val()) ? redeemedSnap.val() : [redeemedSnap.val()]) : [];
+                console.log(`✓ Existing rewards array length: ${existingRewards.length}`);
+                
+                const newRewardEntry = { 
+                    userId, 
+                    rewardId: newRewardRef.key, 
+                    name, 
+                    weight, 
+                    claimedAt: new Date().toISOString(), 
+                    status: "pending" 
+                };
+                console.log(`✓ Creating new reward entry:`, newRewardEntry);
+                
+                const updatedRewards = [...existingRewards, newRewardEntry];
+                console.log(`✓ Updated rewards array (${updatedRewards.length} items):`, updatedRewards);
+                
+                console.log(`🔍 About to WRITE to users/${userId}/redeemed/${todayKey}`);
+                await set(redeemedRef, updatedRewards);
+                console.log(`✅ SUCCESS! Reward stored at users/${userId}/redeemed/${todayKey}`);
+            } catch (err) {
+                console.error(`❌ ERROR storing reward in redeemed:`, err);
+                console.error(`Error details:`, err.message);
+                throw err;
+            }
+
+            // Deduct immediately
+            await update(userRef, {
+                recycling: { ...data.recycling, totalWeight: currentWeight - weight, updatedAt: Date.now() }
+            });
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Reward Submitted ✓',
+                html: `<p style="white-space: pre-wrap; text-align: left;">You requested <strong>${name}</strong>. Awaiting approval.</p>`,
+                position: 'top-end',
+                toast: true,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#dcfce7'
+            });
+        };
+
+
+        // --- Profile Info Load ---
+        if (userId) {
+            get(userRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    const firstName = (data.fullName || "User").split(" ")[0];
+                    document.getElementById("profileName").textContent = firstName;
+                    document.getElementById("profileEmail").textContent = data.email || "";
+                }
+            }).catch((err) => {
+                console.error("Error loading user profile:", err);
+            });
+        }
+
+        loadUserData();
+    </script>
+
+
+
+</body>
+
+</html>

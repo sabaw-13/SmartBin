@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>smartBin | Rewards</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="../includes/profile.js"></script>
+  <script src="../includes/menu.js"></script>
+  <script src="../includes/backtotop.js"></script>
+  <link rel="icon" href="../images/bin.webp">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="has-mobile-bottom-nav font-sans text-gray-800 bg-gradient-to-br from-green-50 via-yellow-50 to-white min-h-screen">
+
+  <!-- Navbar -->
+  <header class="fixed w-full bg-white/80 backdrop-blur shadow-md z-50 transition-all">
+    <nav class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <a href="index.html">
+            <h1 class="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+              <span class="text-green-600 animate-pulse">+</span>
+              <span class="text-black">Tech smart</span>
+              <span class="text-green-600">Bin</span>
+            </h1>
+          </a>
+        </div>
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-6 items-center font-semibold">
+          <a href="index.html" class="text-green-600 hover:text-[#ecbd36] transition">Home</a>
+          <a href="about.html" class="text-green-600 hover:text-[#ecbd36] transition">About Us</a>
+          <a href="#" class="text-[#ecbd36] font-semibold">Rewards</a>
+          <a href="login.html"
+            class="border-2 border-green-600 hover:border-[#ecbd36] text-green-600 px-4 py-2 rounded-lg text-center hover:bg-[#ecbd36] hover:text-black transition duration-300 shadow hover:scale-105">
+            Login
+          </a>
+        </div>
+        <a href="login.html"
+          class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-full border border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition"
+          aria-label="Login">
+          <i class="fas fa-user"></i>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <nav class="mobile-bottom-nav md:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-green-100 shadow-[0_-8px_24px_rgba(0,0,0,0.08)] px-3 pt-2">
+    <div class="grid grid-cols-3 gap-2 max-w-md mx-auto">
+      <a href="index.html" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-green-700 hover:text-[#ecbd36]">
+        <i class="fas fa-home text-lg"></i>
+        <span class="text-xs">Home</span>
+      </a>
+      <a href="about.html" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-green-700 hover:text-[#ecbd36]">
+        <i class="fas fa-circle-info text-lg"></i>
+        <span class="text-xs">About</span>
+      </a>
+      <a href="#" class="flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-[#ecbd36] font-semibold">
+        <i class="fas fa-gift text-lg"></i>
+        <span class="text-xs">Rewards</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative min-h-[320px] h-[60vh] flex items-center justify-center">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('../images/trash.webp');">
+      <div class="absolute inset-0 bg-gradient-to-br from-green-700/70 via-yellow-500/30 to-black/40"></div>
+    </div>
+    <div class="relative z-10 text-center text-white px-4">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">
+        Earn Rewards for <span class="text-green-400">Recycling</span>
+      </h1>
+    </div>
+  </section>
+
+  <!-- Rewards Intro -->
+  <section class="py-20 bg-white">
+    <div class="max-w-3xl mx-auto px-4 text-center" data-aos="fade-up">
+      <h2 class="text-3xl font-bold mb-6 text-green-700">Available Rewards</h2>
+      <p class="text-lg text-gray-600">
+        smartBin makes recycling rewarding. Drop a plastic bottle, and collect points to claim useful
+        rewards.
+      </p>
+    </div>
+  </section>
+
+  <!-- Rewards Grid -->
+  <section class="py-20 bg-gradient-to-br from-green-50 via-yellow-50 to-white">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
+        <!-- Reward 1 -->
+        <div
+          class="bg-white rounded-2xl shadow-xl overflow-hidden hover:scale-105 transition transform duration-300 group">
+          <img src="../images/notebook.webp" alt="Notebook Set" class="w-full h-48 object-cover">
+          <div class="p-6 text-center">
+            <h3 class="text-xl font-semibold mb-2">Notebook Set</h3>
+            <p class="text-green-600 font-bold text-lg">500 points</p>
+          </div>
+        </div>
+        <!-- Reward 2 -->
+        <div
+          class="bg-white rounded-2xl shadow-xl overflow-hidden hover:scale-105 transition transform duration-300 group">
+          <img src="../images/schoolkit.webp" alt="School Supply Kit" class="w-full h-48 object-cover">
+          <div class="p-6 text-center">
+            <h3 class="text-xl font-semibold mb-2">School Supply Kit</h3>
+            <p class="text-green-600 font-bold text-lg">1500 points</p>
+          </div>
+        </div>
+        <!-- Reward 3 -->
+        <div
+          class="bg-white rounded-2xl shadow-xl overflow-hidden hover:scale-105 transition transform duration-300 group">
+          <img src="../images/grocerypack.webp" alt="Grocery Pack" class="w-full h-48 object-cover">
+          <div class="p-6 text-center">
+            <h3 class="text-xl font-semibold mb-2">Grocery Pack</h3>
+            <p class="text-green-600 font-bold text-lg">1500 points</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12 text-green-700">How It Works</h2>
+      <div class="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+        <div class="text-center" data-aos="fade-up" data-aos-delay="100">
+          <div
+            class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">
+            1</div>
+          <h3 class="font-semibold mb-2">Connect</h3>
+          <p class="text-gray-600">Connect the SmartBin to your account through the website</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="200">
+          <div
+            class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">
+            2</div>
+          <h3 class="font-semibold mb-2">Drop</h3>
+          <p class="text-gray-600">Place your plastic bottle in any smartBin unit</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="300">
+          <div
+            class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">
+            3</div>
+          <h3 class="font-semibold mb-2">Earn</h3>
+          <p class="text-gray-600">Collect points for each item you recycle</p>
+        </div>
+        <div class="text-center" data-aos="fade-up" data-aos-delay="400">
+          <div
+            class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white text-xl font-bold mx-auto mb-4">
+            4</div>
+          <h3 class="font-semibold mb-2">Redeem</h3>
+          <p class="text-gray-600">Use your points to claim exciting rewards</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-20 bg-gradient-to-br from-green-50 via-yellow-50 to-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Start Earning Rewards Today</h2>
+      <p class="text-lg mb-8">Join our eco-conscious community and turn recycling into rewards!</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-3">
+        <a href="login.html"
+          class="inline-block w-full sm:w-auto px-8 py-3 bg-green-600 text-white border-2 hover:bg-white hover:border-green-600 hover:text-green-600 rounded-lg font-semibold transition duration-300">
+          Log In
+        </a>
+        <a href="signup.html"
+          class="inline-block w-full sm:w-auto px-8 py-3 bg-white text-green-700 border-2 border-green-600 hover:bg-green-600 hover:text-white rounded-lg font-semibold transition duration-300">
+          Sign Up
+        </a>
+      </div>
+    </div>
+  </section>
+  <!-- Back to Top Button -->
+  <button id="backToTop"
+    class="opacity-0 pointer-events-none fixed bottom-6 right-6 bg-green-600 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg transition-all duration-500 hover:bg-[#ecbd36]">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 800, once: true, offset: 100 });
+  </script>
+</body>
+
+<!-- Footer -->
+  <footer class="bg-gradient-to-r from-green-700 via-green-500 to-green-700 text-white py-10">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">+Tech smartBin</h3>
+          <p class="text-sm">Making recycling rewarding and accessible for everyone.</p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="index.html" class="hover:text-gray-200">Home</a></li>
+            <li><a href="about.html" class="hover:text-gray-200">About Us</a></li>
+            <li><a href="#" class="hover:text-gray-200">Rewards</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Contact</h4>
+          <p class="text-sm mb-2">St. Anthony's College</p>
+          <p class="text-sm mb-2">San Jose, Antique</p>
+        </div>
+      </div>
+      <div class="border-t border-white/20 mt-8 pt-8 text-center">
+        <p class="text-sm">© 2025 smartBin Project | All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+</html>

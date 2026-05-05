@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>smartBin | Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="../includes/admin.js"></script>
+    <link rel="icon" href="../images/bin.webp">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="bg-gray-100">
+    <!-- Sidebar -->
+    <aside
+        class="fixed inset-y-0 left-0 bg-gradient-to-b from-slate-700 to-slate-600 w-64 transition-transform duration-300 transform -translate-x-full md:translate-x-0 z-40 shadow-xl"
+        id="sidebar">
+        <div class="flex items-center justify-between p-6 border-b border-slate-600/50">
+            <div class="flex items-center gap-3">
+                <img src="../images/bin.webp" class="w-8 h-8" alt="Logo">
+                <h1 class="text-white text-xl font-bold">smartBin Admin</h1>
+            </div>
+            <button class="md:hidden text-white" onclick="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="mt-6">
+            <div class="px-4 mb-3">
+                <p class="text-xs font-semibold text-green-100/60 uppercase">Main Menu</p>
+            </div>
+            <a href="#" onclick="loadPage('dashboard')"
+                class="flex items-center px-6 py-3 text-white hover:bg-white/10 border-l-4 border-transparent hover:border-white transition-all">
+                <i class="fas fa-home mr-3"></i> Dashboard
+            </a>
+            <a href="#" onclick="loadPage('rewards')"
+                class="flex items-center px-6 py-3 text-white hover:bg-white/10 border-l-4 border-transparent hover:border-white transition-all">
+                <i class="fas fa-gift mr-3"></i> Reward Claims
+            </a>
+            <a href="#" onclick="loadPage('bins')"
+                class="flex items-center px-6 py-3 text-white hover:bg-white/10 border-l-4 border-transparent hover:border-white transition-all">
+                <i class="fas fa-trash mr-3"></i> Bin Status
+            </a>
+            <a href="#" onclick="loadPage('users')"
+                class="flex items-center px-6 py-3 text-white hover:bg-white/10 border-l-4 border-transparent hover:border-white transition-all">
+                <i class="fas fa-users mr-3"></i> User Management
+            </a>
+        </nav>
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="md:ml-64 p-4 sm:p-6 md:p-8">
+        <!-- Mobile Header -->
+        <div class="md:hidden flex items-center justify-between mb-6">
+            <button onclick="toggleSidebar()">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            <h1 class="text-xl font-bold" id="page-title">Dashboard</h1>
+        </div>
+
+        <div class="flex justify-end mb-4 sm:mb-6 z-10">
+            <div class="relative">
+                <button onclick="toggleProfileMenu()"
+                    class="flex items-center space-x-3 hover:bg-gray-100 rounded-lg p-2">
+                    <div class="w-8 h-8 rounded-full overflow-hidden">
+                        <img src="../images/user.jpg" alt="User Profile" class="w-full h-full object-cover">
+                    </div>
+                    <span class="font-medium">Admin</span>
+                    <i class="fas fa-chevron-down text-sm text-gray-600"></i>
+                </button>
+
+                <!-- Profile Dropdown -->
+                <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 hidden">
+                    <a href="#" onclick="editProfile()"
+                        class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-user-edit mr-3"></i>
+                        Edit Profile
+                    </a>
+                    <a href="#" onclick="openSettings()"
+                        class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                        <i class="fas fa-cog mr-3"></i>
+                        Settings
+                    </a>
+                    <hr class="my-2 border-gray-200">
+                    <a href="#" onclick="handleLogout()"
+                        class="flex items-center px-4 py-2 text-red-600 hover:bg-red-50">
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <section id="page-dashboard" class="space-y-8">
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+                <div class="bg-white rounded-lg shadow p-5 sm:p-8 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg text-gray-500 font-semibold">Total Users</h3>
+                        <i class="fas fa-users text-green-500 text-3xl"></i>
+                    </div>
+                    <p id="dashTotalUsers" class="text-3xl sm:text-4xl font-bold mb-2">0</p>
+                    <p class="text-base text-green-500 font-medium">Active users</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-5 sm:p-8 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg text-gray-500 font-semibold">Active Bins</h3>
+                        <i class="fas fa-trash text-blue-500 text-3xl"></i>
+                    </div>
+                    <p id="dashActiveBins" class="text-3xl sm:text-4xl font-bold mb-2">0</p>
+                    <p class="text-base text-blue-500 font-medium">Operational</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-5 sm:p-8 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg text-gray-500 font-semibold">Pending Claims</h3>
+                        <i class="fas fa-gift text-yellow-500 text-3xl"></i>
+                    </div>
+                    <p id="dashPendingClaims" class="text-3xl sm:text-4xl font-bold mb-2">0</p>
+                    <p class="text-base text-yellow-500 font-medium">Awaiting approval</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-5 sm:p-8 hover:shadow-lg transition-shadow">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg text-gray-500 font-semibold">Bottles Today</h3>
+                        <i class="fas fa-recycle text-green-500 text-3xl"></i>
+                    </div>
+                    <p id="dashBottlesToday" class="text-3xl sm:text-4xl font-bold mb-2">0</p>
+                    <p class="text-base text-green-500 font-medium">Collected today</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rewards Page -->
+        <section id="page-rewards" class="hidden space-y-6">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-gray-500 mb-4">Pending Claims</h3>
+                    <p id="pendingCount" class="text-3xl font-bold text-yellow-500">0</p>
+                    <p class="text-sm text-gray-500">Awaiting approval</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-gray-500 mb-4">Approved Today</h3>
+                    <p id="approvedTodayCount" class="text-3xl font-bold text-green-500">0</p>
+                    <p id="approvedTodayWeight" class="text-sm text-gray-500">Total weights: 0 g</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-gray-500 mb-4">Rejected Claims</h3>
+                    <p id="rejectedCount" class="text-3xl font-bold text-red-500">0</p>
+                    <p class="text-sm text-gray-500">This week</p>
+                </div>
+            </div>
+
+
+            <!-- Claims Management -->
+            <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-8">
+                <h2 class="text-xl font-semibold mb-6">Reward Claims Management</h2>
+                
+                <!-- Filters -->
+                <div class="flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:gap-4 mb-6">
+                    <select id="statusFilter" class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="accepted">Accepted</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <input type="text" id="searchUsers" placeholder="Search users..."
+                        class="w-full sm:min-w-64 px-4 py-2 border border-gray-300 rounded-lg flex-1">
+                    <button onclick="applyFilters()"
+                        class="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                        <i class="fas fa-filter mr-2"></i>Apply Filters
+                    </button>
+                </div>
+
+                <!-- Claims Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b-2 border-green-600">
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">Date</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">User</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">Reward</th>
+                                <th class="text-right py-3 px-4 font-semibold text-gray-700">Weight (g)</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rewardsTableBody" class="divide-y divide-gray-200">
+                            <tr class="border-b border-gray-200">
+                                <td colspan="6" class="py-4 px-4 text-center text-gray-500">Loading claims...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bins Status Page -->
+        <section id="page-bins" class="hidden space-y-6">
+            <!-- Bins Overview Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-gray-500 mb-4">Total Bins</h3>
+                    <p id="totalBinsCount" class="text-3xl font-bold">0</p>
+                    <p class="text-sm text-green-500">All locations</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-gray-500 mb-4">Bins Needing Attention</h3>
+                    <p id="binsAttentionCount" class="text-3xl font-bold text-red-500">0</p>
+                    <p class="text-sm text-gray-500">Above 90% capacity</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-gray-500 mb-4">Average Fill Level</h3>
+                    <p id="averageFillLevel" class="text-3xl font-bold text-blue-500">0%</p>
+                    <p class="text-sm text-gray-500">Across all bins</p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-gray-500 mb-4">Collections Today</h3>
+                    <p id="collectionsTodayCount" class="text-3xl font-bold text-green-500">0</p>
+                    <p class="text-sm text-gray-500">Bottles Collected</p>
+                </div>
+            </div>
+
+            <!-- Bins Status -->
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+                <h2 class="text-xl font-bold">Bin Status Overview</h2>
+                <button onclick="showAddBinModal()"
+                    class="w-full sm:w-auto px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    <i class="fas fa-plus mr-2"></i>Add New Bin
+                </button>
+            </div>
+
+            <!-- Bins Grid (populated from Firebase) -->
+            <div id="binsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                <!-- Bin cards will be rendered here from Firebase -->
+            </div>
+        </section>
+
+        <!-- Users Management Page -->
+        <section id="page-users" class="hidden">
+            <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-8">
+                <h3 class="text-xl font-semibold mb-6">User Management</h3>
+                
+                <!-- Search -->
+                <div class="mb-6">
+                    <input type="text" id="userSearch" placeholder="Search users..." onkeyup="searchUsers()"
+                        class="px-4 py-2 border border-gray-300 rounded-lg w-full">
+                </div>
+
+                <!-- Users Table -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b-2 border-green-600">
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">User ID</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">Name</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">Email</th>
+                                <th class="text-right py-3 px-4 font-semibold text-gray-700">Bottles (kg)</th>
+                                <th class="text-right py-3 px-4 font-semibold text-gray-700">Rewards Claimed</th>
+                                <th class="text-right py-3 px-4 font-semibold text-gray-700">Rewards Value (g)</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">Status</th>
+                                <th class="text-left py-3 px-4 font-semibold text-gray-700">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody" class="divide-y divide-gray-200">
+                            <tr class="border-b border-gray-200">
+                                <td colspan="8" class="py-4 px-4 text-center text-gray-500">Loading users...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script type="module">
+    import { db } from "./firebase.js";
+    import { ref, onValue, update, get, remove, set, push } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    const rewardsTableBody = document.getElementById("rewardsTableBody");
+
+    // --- Load all reward requests ---
+    function loadRewards() {
+        const rewardsRoot = ref(db, "rewards");
+
+        onValue(rewardsRoot, async (snapshot) => {
+            rewardsTableBody.innerHTML = "";
+            if (!snapshot.exists()) {
+                rewardsTableBody.innerHTML = '<tr class="border-b border-gray-200"><td colspan="6" class="py-4 px-4 text-center text-gray-500">No reward claims yet</td></tr>';
+                return;
+            }
+
+            let pendingCount = 0;
+            let approvedTodayCount = 0;
+            let approvedTodayWeight = 0;
+            let rejectedCount = 0;
+
+            const today = new Date().toDateString();
+            let rewardsList = [];
+
+            // Collect rewards
+            snapshot.forEach(userSnap => {
+                const userId = userSnap.key;
+                userSnap.forEach(rewardSnap => {
+                    const reward = rewardSnap.val();
+                    rewardsList.push({
+                        ...reward,
+                        rewardId: rewardSnap.key,
+                        userId
+                    });
+                });
+            });
+
+            // Sort newest first
+            rewardsList.sort((a, b) => {
+                const aDate = new Date(a.requestedAt || a.date).getTime();
+                const bDate = new Date(b.requestedAt || b.date).getTime();
+                return bDate - aDate;
+            });
+
+            // Render rewards
+            for (const reward of rewardsList) {
+                const rewardDate = new Date(reward.requestedAt || reward.date);
+
+                // Count stats
+                if (reward.status === "pending") {
+                    pendingCount++;
+                } else if (reward.status === "accepted") {
+                    if (rewardDate.toDateString() === today) {
+                        approvedTodayCount++;
+                        approvedTodayWeight += reward.weight || 0;
+                    }
+                } else if (reward.status === "rejected") {
+                    rejectedCount++;
+                }
+
+                // Get user name
+                let userName = reward.userName || reward.userId;
+                if (!reward.userName) {
+                    try {
+                        const userSnap = await get(ref(db, `users/${reward.userId}`));
+                        if (userSnap.exists()) {
+                            const userData = userSnap.val();
+                            userName = userData.fullName || reward.userId;
+                        }
+                    } catch (err) {
+                        console.error("Error fetching user:", err);
+                    }
+                }
+
+                // Build table row
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="py-3 px-4 text-sm">${rewardDate.toLocaleDateString()}</td>
+                    <td class="py-3 px-4 text-sm">${userName}</td>
+                    <td class="py-3 px-4 text-sm">${reward.name}</td>
+                    <td class="py-3 px-4 text-right text-sm">${(reward.weight).toFixed(2)}</td>
+                    <td class="py-3 px-4">
+                        <span class="px-2 py-1 text-xs rounded-full ${
+                            reward.status === "pending"
+                                ? "bg-yellow-100 text-yellow-800"
+                                : reward.status === "accepted"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                        }">
+                            ${reward.status}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 flex gap-2">
+                        <button ${
+                            reward.status !== "pending"
+                                ? "disabled class='text-gray-400 cursor-not-allowed'"
+                                : `onclick="approveReward('${reward.userId}','${reward.rewardId}',${reward.weight},'${reward.name.replace(/'/g, "\\'")}')" class='text-green-600 hover:text-green-800'`
+                        } title="${reward.status !== 'pending' ? 'Not available' : 'Approve'}">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button ${
+                            reward.status !== "pending"
+                                ? "disabled class='text-gray-400 cursor-not-allowed'"
+                                : `onclick="rejectReward('${reward.userId}','${reward.rewardId}',${reward.weight})" class='text-red-600 hover:text-red-800'`
+                        } title="${reward.status !== 'pending' ? 'Not available' : 'Reject'}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </td>
+                `;
+                tr.classList.add('border-b', 'border-gray-200');
+                rewardsTableBody.appendChild(tr);
+            }
+
+            // Update Stats Cards
+            document.getElementById("pendingCount").textContent = pendingCount;
+            document.getElementById("approvedTodayCount").textContent = approvedTodayCount;
+            document.getElementById("approvedTodayWeight").textContent = approvedTodayWeight.toFixed(2) + " g";
+            document.getElementById("rejectedCount").textContent = rejectedCount;
+        });
+    }
+
+    // --- Approve Reward ---
+    window.approveReward = async function (userId, rewardId, weight, name) {
+        console.log(`Approving: ${name}`);
+        
+        // Update in rewards table
+        await update(ref(db, `rewards/${userId}/${rewardId}`), { 
+            status: "accepted", 
+            acceptedAt: new Date().toISOString() 
+        });
+
+        // Find the date and update the status in redeemed
+        const redeemedRootRef = ref(db, `users/${userId}/redeemed`);
+        const redeemedRootSnap = await get(redeemedRootRef);
+        
+        if (redeemedRootSnap.exists()) {
+            const redeemedRoot = redeemedRootSnap.val();
+            console.log(`Found redeemed dates:`, Object.keys(redeemedRoot));
+            
+            // Loop through each date
+            for (const dateKey in redeemedRoot) {
+                console.log(`Checking date: ${dateKey}`);
+                const dateData = redeemedRoot[dateKey];
+                
+                // dateData is an object like {0: {...}, 1: {...}, 13: {...}}
+                for (const index in dateData) {
+                    const reward = dateData[index];
+                    console.log(`  [${index}] rewardId: ${reward.rewardId}, status: ${reward.status}`);
+                    
+                    if (reward.rewardId === rewardId) {
+                        console.log(`✅ Found reward at index ${index}!`);
+                        const updatePath = `users/${userId}/redeemed/${dateKey}/${index}`;
+                        console.log(`Updating path: ${updatePath}`);
+                        
+                        await update(ref(db, updatePath), { status: "accepted" });
+                        console.log(`✅ Updated!`);
+                        
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Reward Approved ✓',
+                            html: `<p style="white-space: pre-wrap; text-align: left;">Reward "${name}" has been approved successfully.</p>`,
+                            position: 'top-end',
+                            toast: true,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                            background: '#dcfce7'
+                        });
+                        return;
+                    }
+                }
+            }
+        }
+        
+        console.log(`❌ Reward not found`);
+        Swal.fire({
+            icon: 'success',
+            title: 'Reward Approved ✓',
+            html: `<p style="white-space: pre-wrap; text-align: left;">Reward "${name}" has been approved successfully.</p>`,
+            position: 'top-end',
+            toast: true,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: '#dcfce7'
+        });
+    };
+
+    // --- Reject Reward (return weight) ---
+    window.rejectReward = async function (userId, rewardId, weight) {
+        const rewardRef = ref(db, `rewards/${userId}/${rewardId}`);
+        const userRef = ref(db, `users/${userId}`);
+
+        await update(rewardRef, { status: "rejected" });
+
+        // Give weight back
+        const userSnap = await get(userRef);
+        if (userSnap.exists()) {
+            const userData = userSnap.val();
+            const currentWeight = userData.recycling?.totalWeight || 0;
+
+            await update(userRef, {
+                recycling: {
+                    ...userData.recycling,
+                    totalWeight: currentWeight + weight,
+                    updatedAt: Date.now()
+                }
+            });
+        }
+    };
+
+    loadRewards();
+
+    // ===========================================================
+    // =============== DASHBOARD STATS SECTION ====================
+    // ===========================================================
+
+    function loadDashboardStats() {
+        // Total users
+        onValue(ref(db, 'users'), (snapshot) => {
+            const totalUsers = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+            const el = document.getElementById('dashTotalUsers');
+            if (el) el.textContent = totalUsers;
+        });
+
+        // Active bins
+        onValue(ref(db, 'bins'), (snapshot) => {
+            let activeBins = 0;
+            if (snapshot.exists()) {
+                snapshot.forEach(binSnap => {
+                    const bin = binSnap.val();
+                    const status = bin.status ? String(bin.status).toLowerCase() : '';
+                    const power = bin.power;
+                    if (status === 'active' || power === true) activeBins++;
+                });
+            }
+            const el = document.getElementById('dashActiveBins');
+            if (el) el.textContent = activeBins;
+        });
+
+        // Pending claims
+        onValue(ref(db, 'rewards'), (snapshot) => {
+            let pendingCount = 0;
+            if (snapshot.exists()) {
+                snapshot.forEach(userSnap => {
+                    userSnap.forEach(rewardSnap => {
+                        const reward = rewardSnap.val();
+                        if (reward.status === 'pending') pendingCount++;
+                    });
+                });
+            }
+            const el = document.getElementById('dashPendingClaims');
+            if (el) el.textContent = pendingCount;
+        });
+
+        // Bottles today (from global tallies computed by loadUsers/loadBins)
+        const updateBottlesToday = () => {
+            const total = (window._bottlesFromUsers || 0) + (window._bottlesFromBins || 0);
+            const el = document.getElementById('dashBottlesToday');
+            if (el) el.textContent = total;
+        };
+        
+        // Update bottles every 2 seconds to catch updates
+        setInterval(updateBottlesToday, 2000);
+        updateBottlesToday();
+    }
+
+    loadDashboardStats();
+
+
+
+    // ===========================================================
+    // =============== USER MANAGEMENT SECTION ====================
+    // ===========================================================
+
+    const usersTableBody = document.getElementById("usersTableBody");
+
+    function loadUsers() {
+        const usersRef = ref(db, "users");
+
+        onValue(usersRef, async (snapshot) => {
+            usersTableBody.innerHTML = "";
+            let bottlesToday = 0;
+            const today = new Date().toDateString();
+            if (!snapshot.exists()) {
+                usersTableBody.innerHTML = '<tr class="border-b border-gray-200"><td colspan="8" class="py-4 px-4 text-center text-gray-500">No users found</td></tr>';
+                return;
+            }
+
+            // Collect all users first
+            const usersList = [];
+            snapshot.forEach((userSnap) => {
+                usersList.push({
+                    userId: userSnap.key,
+                    user: userSnap.val()
+                });
+            });
+
+            // Process each user
+            for (const { userId, user } of usersList) {
+                // Build full name from separate fields or use fullName
+                let fullName = user.fullName;
+                if (!fullName && (user.firstName || user.lastName)) {
+                    const parts = [];
+                    if (user.firstName) parts.push(user.firstName);
+                    if (user.middleName) parts.push(user.middleName);
+                    if (user.lastName) parts.push(user.lastName);
+                    fullName = parts.join(' ');
+                }
+                fullName = fullName || "(No name)";
+                
+                const email = user.email || "(No email)";
+                const bottles = user.bottles ?? 0;
+                const totalWeight = user.recycling?.totalWeight ?? 0;
+                const status = user.status || (user.disabled ? 'Inactive' : 'Active');
+
+                // Calculate rewards claimed and value from redeemed path
+                let rewardsCount = 0;
+                let rewardsValue = 0;
+                
+                try {
+                    const redeemedRef = ref(db, `users/${userId}/redeemed`);
+                    const redeemedSnap = await get(redeemedRef);
+                    
+                    if (redeemedSnap.exists()) {
+                        const redeemedData = redeemedSnap.val();
+                        console.log(`Fetching rewards for user ${userId}:`, redeemedData);
+                        
+                        // redeemedData is { dateKey: {0: reward, 1: reward} } or { dateKey: [rewards] }
+                        Object.entries(redeemedData).forEach(([dateKey, rewardsData]) => {
+                            // Convert object format (0, 1, 2...) to array
+                            let rewardsList = Array.isArray(rewardsData) ? rewardsData : Object.values(rewardsData);
+                            
+                            rewardsList.forEach(reward => {
+                                // Only count ACCEPTED rewards
+                                if (reward.status === "accepted") {
+                                    rewardsCount++;
+                                    rewardsValue += reward.weight || 0;
+                                }
+                            });
+                        });
+                    }
+                } catch (err) {
+                    console.error(`Error loading rewards for user ${userId}:`, err);
+                }
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="py-3 px-4 text-sm">${userId}</td>
+                    <td class="py-3 px-4"><button class="text-left hover:underline text-blue-600" onclick="viewUser('${userId}')">${fullName}</button></td>
+                    <td class="py-3 px-4 text-sm">${email}</td>
+                    <td class="py-3 px-4 text-right text-sm">${bottles}</td>
+                    <td class="py-3 px-4 text-right text-sm text-purple-600 font-medium">${rewardsCount}</td>
+                    <td class="py-3 px-4 text-right text-sm text-purple-600 font-medium">${rewardsValue.toFixed(2)}</td>
+                    <td class="py-3 px-4">
+                        <span class="px-2 py-1 text-xs rounded-full ${status.toLowerCase().startsWith('active') ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}">
+                            ${status}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 flex gap-2">
+                        <button onclick="editUser('${userId}')" class="text-blue-600 hover:text-blue-800" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteUser('${userId}')" class="text-red-600 hover:text-red-800" title="Delete">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tr.classList.add('border-b', 'border-gray-200');
+
+                usersTableBody.appendChild(tr);
+
+                // --- Aggregate bottles for today (best-effort across multiple possible schemas) ---
+                try {
+                    // 1) explicit per-user today field
+                    if (user.recycling && typeof user.recycling.todayBottles === 'number') {
+                        bottlesToday += Number(user.recycling.todayBottles);
+                    } else if (typeof user.todayBottles === 'number') {
+                        bottlesToday += Number(user.todayBottles);
+                    } else if (typeof user.bottles === 'number' && user.recycling && user.recycling.lastUpdated) {
+                        const d = new Date(user.recycling.lastUpdated);
+                        if (!isNaN(d.getTime()) && d.toDateString() === today) bottlesToday += Number(user.bottles);
+                    }
+
+                    // 2) recycling.history (array or object) with per-entry bottles/count
+                    const hist = user.recycling && (user.recycling.history || user.recycling.records || user.recycling.transactions);
+                    if (hist) {
+                        if (Array.isArray(hist)) {
+                            for (const entry of hist) {
+                                const ts = entry.date || entry.ts || entry.timestamp;
+                                const cnt = entry.bottles ?? entry.count ?? entry.qty;
+                                if (cnt != null && ts) {
+                                    const d = new Date(ts);
+                                    if (!isNaN(d.getTime()) && d.toDateString() === today) bottlesToday += Number(cnt);
+                                }
+                            }
+                        } else if (typeof hist === 'object') {
+                            for (const k of Object.keys(hist)) {
+                                const entry = hist[k];
+                                const ts = entry && (entry.date || entry.ts || entry.timestamp);
+                                const cnt = entry && (entry.bottles ?? entry.count ?? entry.qty);
+                                if (cnt != null && ts) {
+                                    const d = new Date(ts);
+                                    if (!isNaN(d.getTime()) && d.toDateString() === today) bottlesToday += Number(cnt);
+                                }
+                            }
+                        }
+                    }
+
+                    // 3) user.collections (array/object) entries with bottles/count
+                    if (user.collections) {
+                        if (Array.isArray(user.collections)) {
+                            for (const col of user.collections) {
+                                const ts = col && (col.date || col.ts || col.timestamp) || col;
+                                const cnt = col && (col.bottles ?? col.count ?? col.qty);
+                                if (cnt != null && ts) {
+                                    const d = new Date(ts);
+                                    if (!isNaN(d.getTime()) && d.toDateString() === today) bottlesToday += Number(cnt);
+                                }
+                            }
+                        } else if (typeof user.collections === 'object') {
+                            for (const k of Object.keys(user.collections)) {
+                                const col = user.collections[k];
+                                const ts = col && (col.date || col.ts || col.timestamp) || col;
+                                const cnt = col && (col.bottles ?? col.count ?? col.qty);
+                                if (cnt != null && ts) {
+                                    const d = new Date(ts);
+                                    if (!isNaN(d.getTime()) && d.toDateString() === today) bottlesToday += Number(cnt);
+                                }
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.debug('bottlesToday aggregate error for user', userId, e);
+                }
+            }
+
+            // Store per-users tally
+            try {
+                window._bottlesFromUsers = bottlesToday;
+            } catch (e) {
+                console.error('Error storing user bottles:', e);
+            }
+        });
+    }
+
+    // View user details (shows a modal with user info fetched from Firebase)
+    window.viewUser = async function (userId) {
+        try {
+            const userSnap = await get(ref(db, `users/${userId}`));
+            if (!userSnap.exists()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'User Not Found',
+                    html: '<p style="white-space: pre-wrap; text-align: left;">The user could not be found in the system.</p>',
+                    position: 'top-end',
+                    toast: true,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#fee2e2'
+                });
+                return;
+            }
+
+            const user = userSnap.val();
+            
+            // Build full name from separate fields or use fullName
+            let fullName = user.fullName;
+            if (!fullName && (user.firstName || user.lastName)) {
+                const parts = [];
+                if (user.firstName) parts.push(user.firstName);
+                if (user.middleName) parts.push(user.middleName);
+                if (user.lastName) parts.push(user.lastName);
+                fullName = parts.join(' ');
+            }
+            fullName = fullName || 'No name';
+            
+            const html = `
+                <div class="text-left space-y-2">
+                    <p><strong>Name:</strong> ${fullName}</p>
+                    <p><strong>Email:</strong> ${user.email || ''}</p>
+                    <p><strong>Bottles:</strong> ${user.bottles ?? 0}</p>
+                    <p><strong>Total Weight:</strong> ${((user.recycling?.totalWeight) ?? 0).toFixed(2)} g</p>
+                    <p><strong>Status:</strong> ${user.status || (user.disabled ? 'Inactive' : 'Active')}</p>
+                </div>
+            `;
+
+            Swal.fire({ title: 'User Details', html, width: 600 });
+        } catch (err) {
+            console.error(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                html: '<p style="white-space: pre-wrap; text-align: left;">Failed to fetch user details. Please try again.</p>',
+                position: 'top-end',
+                toast: true,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#fee2e2'
+            });
+        }
+    };
+
+    // Edit user (simple modal form that updates fullName and email)
+    window.editUser = async function (userId) {
+        try {
+            const userSnap = await get(ref(db, `users/${userId}`));
+            if (!userSnap.exists()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'User Not Found',
+                    html: '<p style="white-space: pre-wrap; text-align: left;">The user could not be found in the system.</p>',
+                    position: 'top-end',
+                    toast: true,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#fee2e2'
+                });
+                return;
+            }
+
+            const user = userSnap.val();
+
+            const { value: formValues } = await Swal.fire({
+                title: 'Edit User',
+                html: `
+                    <input id="swal-firstname" class="swal2-input" placeholder="First name" value="${user.firstName || ''}">
+                    <input id="swal-middlename" class="swal2-input" placeholder="Middle name" value="${user.middleName || ''}">
+                    <input id="swal-lastname" class="swal2-input" placeholder="Last name" value="${user.lastName || ''}">
+                    <input id="swal-email" class="swal2-input" placeholder="Email" value="${user.email || ''}">
+                    <select id="swal-status" class="swal2-select" style="display:block;margin:0 auto;">
+                        <option value="Active" ${ (user.status||'Active') === 'Active' ? 'selected' : ''}>Active</option>
+                        <option value="Inactive" ${ (user.status||'Active') === 'Inactive' ? 'selected' : ''}>Inactive</option>
+                    </select>
+                `,
+                focusConfirm: false,
+                showCancelButton: true,
+                preConfirm: () => {
+                    return {
+                        firstName: document.getElementById('swal-firstname').value,
+                        middleName: document.getElementById('swal-middlename').value,
+                        lastName: document.getElementById('swal-lastname').value,
+                        email: document.getElementById('swal-email').value,
+                        status: document.getElementById('swal-status').value
+                    };
+                }
+            });
+
+            if (formValues) {
+                await update(ref(db, `users/${userId}`), {
+                    firstName: formValues.firstName,
+                    middleName: formValues.middleName,
+                    lastName: formValues.lastName,
+                    email: formValues.email,
+                    status: formValues.status
+                });
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'User Updated ✓',
+                    html: '<p style="white-space: pre-wrap; text-align: left;">User information has been saved successfully.</p>',
+                    position: 'top-end',
+                    toast: true,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#dcfce7'
+                });
+            }
+        } catch (err) {
+            console.error(err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                html: '<p style="white-space: pre-wrap; text-align: left;">Failed to update user. Please try again.</p>',
+                position: 'top-end',
+                toast: true,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#fee2e2'
+            });
+        }
+    };
+
+    // Delete user
+    window.deleteUser = function (userId) {
+        Swal.fire({
+            title: 'Delete User?',
+            text: "This action will permanently remove the user and cannot be undone.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Yes, delete'
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await remove(ref(db, `users/${userId}`));
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'User Deleted ✓',
+                        html: '<p style="white-space: pre-wrap; text-align: left;">User has been removed successfully.</p>',
+                        position: 'top-end',
+                        toast: true,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        background: '#dcfce7'
+                    });
+                } catch (err) {
+                    console.error(err);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        html: '<p style="white-space: pre-wrap; text-align: left;">Failed to delete user. Please try again.</p>',
+                        position: 'top-end',
+                        toast: true,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        background: '#fee2e2'
+                    });
+                }
+            }
+        });
+    };
+
+    loadUsers();
+
+    // ===========================================================
+    // =============== BINS MANAGEMENT SECTION ====================
+    // ===========================================================
+
+    const binsGrid = document.getElementById('binsGrid');
+
+    function loadBins() {
+        const binsRef = ref(db, 'bins');
+
+        onValue(binsRef, (snapshot) => {
+            console.debug('loadBins: snapshot:', snapshot.exists() ? snapshot.val() : null);
+            binsGrid.innerHTML = '';
+            if (!snapshot.exists()) {
+                binsGrid.innerHTML = `<div class="col-span-1 p-6 bg-white rounded shadow text-center text-gray-500">No bins found in the database.</div>`;
+                return;
+            }
+            // Collect bins into an array to compute stats first
+            const binsList = [];
+            snapshot.forEach(binSnap => {
+                binsList.push({ id: binSnap.key, data: binSnap.val() });
+            });
+
+            // Compute stats from binsList
+            try {
+                const totalBins = binsList.length;
+
+                // Fill percent detection: try multiple field names, but only for ACTIVE bins
+                const percents = binsList.map(b => {
+                    const bin = b.data || {};
+                    
+                    // Check if bin is active
+                    let binStatus = bin.status;
+                    if (binStatus && typeof binStatus === 'object') {
+                        binStatus = binStatus.status || binStatus.state || (binStatus.active === true ? 'active' : (binStatus.active === false ? 'inactive' : undefined));
+                    }
+                    binStatus = String(binStatus || 'unknown').toLowerCase();
+                    
+                    // Only include active bins
+                    if (binStatus !== 'active' && bin.power !== true) {
+                        return undefined;
+                    }
+                    
+                    // Get capacity percentage - use binCapacity if available
+                    if (typeof bin.binCapacity === 'number') return Number(bin.binCapacity);
+                    if (typeof bin.fillPercent === 'number') return Number(bin.fillPercent);
+                    if (typeof bin.fill_level === 'number') return Number(bin.fill_level);
+                    if (typeof bin.fillLevel === 'number') return Number(bin.fillLevel);
+                    // compute from currentLoad/capacity
+                    if (typeof bin.currentLoad === 'number' && typeof bin.capacity === 'number' && bin.capacity > 0) return (bin.currentLoad / bin.capacity) * 100;
+                    if (typeof bin.currentWeight === 'number' && typeof bin.capacityWeight === 'number' && bin.capacityWeight > 0) return (bin.currentWeight / bin.capacityWeight) * 100;
+                    return undefined;
+                }).filter(v => v !== undefined && !isNaN(v));
+
+                const binsNeedingAttention = percents.filter(p => p >= 90).length;
+                const avgFill = percents.length ? Math.round(percents.reduce((a,c) => a+c, 0) / percents.length) : 0;
+
+                // Collections today: try several possible shapes
+                const today = new Date().toDateString();
+                let collectionsToday = 0;
+                for (const b of binsList) {
+                    const bin = b.data || {};
+                    // 1) explicit number field
+                    if (typeof bin.collectionsToday === 'number') {
+                        collectionsToday += bin.collectionsToday;
+                        continue;
+                    }
+                    // 2) collections array/object with timestamps
+                    if (bin.collections && typeof bin.collections === 'object') {
+                        // If array-like
+                        if (Array.isArray(bin.collections)) {
+                            collectionsToday += bin.collections.filter(ts => {
+                                const d = new Date(ts);
+                                return !isNaN(d.getTime()) && d.toDateString() === today;
+                            }).length;
+                            continue;
+                        }
+                        // object map
+                        for (const k of Object.keys(bin.collections)) {
+                            const ts = bin.collections[k];
+                            const d = new Date(ts);
+                            if (!isNaN(d.getTime()) && d.toDateString() === today) collectionsToday++;
+                        }
+                        continue;
+                    }
+                    // 3) lastCollection timestamp - count as one collection for this bin today
+                    if (bin.lastCollection) {
+                        const d = new Date(bin.lastCollection);
+                        if (!isNaN(d.getTime()) && d.toDateString() === today) collectionsToday++;
+                        continue;
+                    }
+                }
+
+                // Update stat elements (if present)
+                const elTotal = document.getElementById('totalBinsCount');
+                const elAttention = document.getElementById('binsAttentionCount');
+                const elAvg = document.getElementById('averageFillLevel');
+                const elCollections = document.getElementById('collectionsTodayCount');
+                if (elTotal) elTotal.textContent = totalBins;
+                if (elAttention) elAttention.textContent = binsNeedingAttention;
+                if (elAvg) elAvg.textContent = `${avgFill}%`;
+                // Note: collectionsToday will be updated after we compute bottle counts below
+                // if (elCollections) elCollections.textContent = collectionsToday;
+
+                // Compute bottles from per-bin daily records (best-effort)
+                try {
+                    const todayDateStr = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+                    let binBottlesToday = 0;
+                    console.log('=== Computing bottles for today:', todayDateStr);
+                    
+                    for (const b of binsList) {
+                        const bin = b.data || {};
+                        console.log('Bin:', b.id, 'full data:', JSON.stringify(bin, null, 2));
+                        
+                        // Daily data should be keyed by YYYY-MM-DD
+                        if (bin.daily && typeof bin.daily === 'object') {
+                            console.log('Found bin.daily for', b.id, ':', bin.daily);
+                            
+                            // Look for today's date key
+                            if (bin.daily[todayDateStr]) {
+                                const todayEntry = bin.daily[todayDateStr];
+                                console.log('Found entry for', todayDateStr, ':', todayEntry);
+                                
+                                // Extract the count (you showed: count: 2)
+                                const cnt = todayEntry.count ?? todayEntry.cnt ?? todayEntry.bottles ?? todayEntry.qty;
+                                if (cnt != null && !isNaN(Number(cnt))) {
+                                    console.log('✓ Adding count:', cnt);
+                                    binBottlesToday += Number(cnt);
+                                }
+                            } else {
+                                console.log('No entry for date', todayDateStr, 'Available keys:', Object.keys(bin.daily));
+                            }
+                        }
+                        
+                        // Also check bin.session (current active collection)
+                        if (bin.session && typeof bin.session === 'object') {
+                            const sessionBottles = bin.session.bottles;
+                            if (typeof sessionBottles === 'number' && sessionBottles > 0) {
+                                console.log('✓ Adding session bottles:', sessionBottles);
+                                binBottlesToday += sessionBottles;
+                            }
+                        }
+                    }
+                    
+                    window._bottlesFromBins = binBottlesToday;
+                    // Update Collections Today to show total bottles
+                    const elCollections = document.getElementById('collectionsTodayCount');
+                    const elBottles = document.getElementById('bottlesTodayCount');
+                    const totalBottles = (window._bottlesFromUsers || 0) + (window._bottlesFromBins || 0);
+                    if (elCollections) {
+                        elCollections.textContent = totalBottles;  // Show bottles in the big number
+                    }
+                    if (elBottles) {
+                        elBottles.textContent = totalBottles;  // Also update the subtitle
+                    }
+                    console.log('✓ Collections Today - Bottles:', totalBottles, '| From bins:', binBottlesToday, '| From users:', window._bottlesFromUsers || 0);
+                } catch (e) {
+                    console.error('Error computing bin bottles today:', e);
+                }
+            } catch (statsErr) {
+                console.error('Error computing bin stats:', statsErr);
+            }
+
+            // Now render each bin
+            for (const entry of binsList) {
+                const binId = entry.id;
+                const bin = entry.data || {};
+
+                // Support multiple possible schemas: prefer explicit fields but
+                // gracefully fall back to available properties so existing bins
+                // like `bin001` with `lastSeen`/`power` are visible.
+                const controlNo = bin.controlNo || binId;
+                const location = bin.location || bin.name || '(No location)';
+                // Priority: if `power` is explicitly a boolean, derive status from it
+                let normalizedStatus = undefined;
+                if (typeof bin.power === 'boolean') {
+                    normalizedStatus = bin.power ? 'active' : 'inactive';
+                } else {
+                    // Normalize status: handle cases where `status` might be an object
+                    let statusRaw = bin.status;
+                    if (statusRaw && typeof statusRaw === 'object') {
+                        // try common object shapes: { status: 'active' } or { state: 'active' } or { active: true }
+                        normalizedStatus = statusRaw.status || statusRaw.state || (statusRaw.active === true ? 'active' : (statusRaw.active === false ? 'inactive' : undefined));
+                    } else {
+                        normalizedStatus = statusRaw;
+                    }
+                }
+                if (!normalizedStatus) normalizedStatus = 'unknown';
+                const status = String(normalizedStatus).toLowerCase();
+
+                // lastCollection may not be present; compute a robust "Last Seen" display
+                const lastCollection = formatLastSeen(bin);
+
+                // Additional fields to display when present
+                const power = typeof bin.power === 'boolean' ? bin.power : null;
+                const binCapacity = bin.binCapacity || 0;
+                const capacityPercent = Math.min(Math.round(binCapacity), 100); // Cap at 100%
+                const capacityColor = capacityPercent >= 90 ? 'bg-red-600' : capacityPercent >= 70 ? 'bg-yellow-600' : 'bg-green-600';
+
+                const card = document.createElement('div');
+                card.className = 'border rounded-lg p-4 bg-white shadow bin-card';
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-sm text-gray-500">Control No. ${controlNo}</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2 py-1 ${status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} rounded-full text-xs">
+                                ${status.charAt(0).toUpperCase() + status.slice(1)}
+                            </span>
+                            ${status === 'active'
+                                ? `<button onclick="toggleBinStatus('${binId}')" class="text-sm text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-power-off"></i>
+                                   </button>`
+                                : `<button disabled class="text-sm text-gray-300 cursor-not-allowed" title="Inactive">
+                                        <i class="fas fa-power-off"></i>
+                                   </button>`
+                            }
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold">${location}</h3>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Current Capacity</span>
+                            <span class="font-medium">${capacityPercent}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div class="${capacityColor} h-2.5 rounded-full" style="width: ${capacityPercent}%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500">Last Seen</span>
+                            <span>${lastCollection}</span>
+                        </div>
+                        ${power === null ? '' : `<div class="flex justify-between text-sm"><span class="text-gray-500">Power</span><span>${power ? 'On' : 'Off'}</span></div>`}
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="notifyMaintenance('${binId}')" class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                            <i class="fas fa-bell mr-2"></i>Notify
+                        </button>
+                        <button onclick="editBin('${binId}')" class="px-4 py-2 text-blue-600 hover:text-blue-800">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button onclick="deleteBin('${binId}')" class="px-4 py-2 text-red-600 hover:text-red-800">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+
+                binsGrid.appendChild(card);
+            }
+        }, (error) => {
+            console.error('Error listening to bins:', error);
+            binsGrid.innerHTML = `<div class="col-span-1 p-6 bg-white rounded shadow text-center text-red-500">Error loading bins: ${error && error.message ? error.message : 'See console'}</div>`;
+        });
+    }
+
+    // Toggle bin status (active/inactive) and update Firebase
+    window.toggleBinStatus = function (binId) {
+        (async () => {
+            try {
+                const binRef = ref(db, `bins/${binId}`);
+                const snap = await get(binRef);
+                if (!snap.exists()) throw new Error('Bin not found');
+
+                const bin = snap.val();
+                const current = (typeof bin.power === 'boolean') ? (bin.power ? 'active' : 'inactive') : ((bin.status || 'inactive').toString()).toLowerCase();
+
+                console.debug('toggleBinStatus: binId=', binId, 'current=', current, 'bin=', bin);
+
+                // Only allow toggling (deactivation) when the bin is active.
+                if (String(current).toLowerCase() !== 'active') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Bin Inactive',
+                        html: '<p style="white-space: pre-wrap; text-align: left;">This bin is inactive and cannot be toggled from the UI.</p>',
+                        position: 'top-end',
+                        toast: true,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        background: '#fef3c7'
+                    });
+                    return;
+                }
+
+                const result = await Swal.fire({
+                    title: 'Deactivate Bin?',
+                    text: "This will set the bin to Inactive.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc2626',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Yes, deactivate'
+                });
+
+                if (!result.isConfirmed) return;
+
+                await update(binRef, { status: 'inactive', power: false, updatedAt: Date.now() });
+                console.debug('toggleBinStatus: deactivated', binId);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bin Deactivated ✓',
+                    html: '<p style="white-space: pre-wrap; text-align: left;">Bin has been deactivated successfully.</p>',
+                    position: 'top-end',
+                    toast: true,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#dcfce7'
+                });
+            } catch (err) {
+                console.error('toggleBinStatus error:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    html: `<p style="white-space: pre-wrap; text-align: left;">Failed to update bin status: ${err && err.message ? err.message : err}</p>`,
+                    position: 'top-end',
+                    toast: true,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#fee2e2'
+                });
+            }
+        })();
+    };
+
+    // Edit bin (location and status)
+    window.editBin = async function (binId) {
+        try {
+            const snap = await get(ref(db, `bins/${binId}`));
+            if (!snap.exists()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Bin Not Found',
+                    html: '<p style="white-space: pre-wrap; text-align: left;">The bin could not be found in the system.</p>',
+                    position: 'top-end',
+                    toast: true,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#fee2e2'
+                });
+                return;
+            }
+
+            const bin = snap.val();
+            const { value } = await Swal.fire({
+                title: 'Edit Bin',
+                html: `
+                    <input id="bin-location" class="swal2-input" placeholder="Location" value="${bin.location || ''}">
+                `,
+                focusConfirm: false,
+                showCancelButton: true,
+                preConfirm: () => ({ location: document.getElementById('bin-location').value })
+            });
+
+            if (value) {
+                console.debug('editBin: saving', binId, { location: value.location });
+                await update(ref(db, `bins/${binId}`), { location: value.location, updatedAt: Date.now() });
+                console.debug('editBin: save successful', binId);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bin Updated ✓',
+                    html: '<p style="white-space: pre-wrap; text-align: left;">Bin information has been saved successfully.</p>',
+                    position: 'top-end',
+                    toast: true,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#dcfce7'
+                });
+            }
+        } catch (err) {
+            console.error('editBin error:', err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                html: `<p style="white-space: pre-wrap; text-align: left;">Failed to edit bin: ${err && err.message ? err.message : err}</p>`,
+                position: 'top-end',
+                toast: true,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#fee2e2'
+            });
+        }
+    };
+
+    // Delete bin
+    window.deleteBin = function (binId) {
+        Swal.fire({
+            title: 'Delete Bin?',
+            text: "This will permanently remove the bin.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Yes, delete'
+        }).then(async (result) => {
+            if (!result.isConfirmed) return;
+
+            try {
+                await remove(ref(db, `bins/${binId}`));
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Bin Deleted ✓',
+                    html: '<p style="white-space: pre-wrap; text-align: left;">Bin has been removed successfully.</p>',
+                    position: 'top-end',
+                    toast: true,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#dcfce7'
+                });
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    html: '<p style="white-space: pre-wrap; text-align: left;">Failed to delete bin. Please try again.</p>',
+                    position: 'top-end',
+                    toast: true,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#fee2e2'
+                });
+            }
+        });
+    };
+
+    loadBins();
+
+    // Add new bin (called by includes/admin.js's showAddBinModal)
+    window.addNewBin = async function (binData) {
+        try {
+            console.debug('addNewBin: binData=', binData);
+
+            // Normalize control number into a safe key if provided, otherwise push new key
+            let key = null;
+            if (binData.controlNo) {
+                // remove spaces and keep alphanum and dash/underscore
+                key = String(binData.controlNo).toLowerCase().replace(/[^a-z0-9-_]/g, '_');
+            }
+
+            if (!key) {
+                // push a unique key
+                const newRef = push(ref(db, 'bins'));
+                key = newRef.key;
+            }
+
+            const payload = {
+                controlNo: binData.controlNo || key,
+                location: binData.location || '',
+                status: (binData.status || 'inactive').toString(),
+                power: (binData.status || '').toString().toLowerCase() === 'active',
+                createdAt: Date.now(),
+                updatedAt: Date.now()
+            };
+
+            await set(ref(db, `bins/${key}`), payload);
+            console.debug('addNewBin: created', key, payload);
+            Swal.fire({
+                icon: 'success',
+                title: 'Bin Added ✓',
+                html: '<p style="white-space: pre-wrap; text-align: left;">New bin has been added successfully.</p>',
+                position: 'top-end',
+                toast: true,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#dcfce7'
+            });
+        } catch (err) {
+            console.error('addNewBin error:', err);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                html: `<p style="white-space: pre-wrap; text-align: left;">Failed to add bin: ${err && err.message ? err.message : err}</p>`,
+                position: 'top-end',
+                toast: true,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#fee2e2'
+            });
+        }
+    };
+
+    // Helper: format seconds-ago (assumes `lastSeen` is seconds ago)
+    function formatTimeAgoSeconds(value) {
+        try {
+            // If lastSeen seems like a timestamp in ms/seconds, try to be flexible
+            if (Math.abs(value) > 1e10) { // large -> probably ms timestamp
+                const d = new Date(value);
+                return d.toLocaleString();
+            }
+
+            // treat as seconds ago
+            const seconds = Number(value);
+            if (isNaN(seconds)) return String(value);
+            if (seconds < 60) return `${seconds}s ago`;
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes}m ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours}h ago`;
+            const days = Math.floor(hours / 24);
+            return `${days}d ago`;
+        } catch (e) {
+            return String(value);
+        }
+    }
+
+    // Last-seen formatter — always returns an absolute local date/time string.
+    // Handles: lastCollection timestamp, lastSeen as seconds-ago, epoch seconds, ms epoch, ISO strings, and simple objects.
+    function formatLastSeen(bin) {
+        try {
+            if (!bin) return 'N/A';
+
+            // 1) explicit lastCollection timestamp
+            if (bin.lastCollection) {
+                const d = new Date(bin.lastCollection);
+                if (!isNaN(d.getTime())) return d.toLocaleTimeString();
+            }
+
+            // 2) lastSeen raw value
+            let raw = bin.lastSeen ?? bin.last_seen ?? bin.lastSeenAt ?? null;
+            if (raw == null) return 'N/A';
+
+            // If it's an object, try common fields
+            if (typeof raw === 'object') {
+                const candidates = ['ts', 'timestamp', 'secs', 'seconds', 'value', 'lastSeen', 'last_seen', 't'];
+                for (const k of candidates) {
+                    if (raw[k] !== undefined) {
+                        raw = raw[k];
+                        break;
+                    }
+                }
+                if (typeof raw === 'object') {
+                    const flat = Object.values(raw).find(v => typeof v === 'number' || typeof v === 'string');
+                    if (flat !== undefined) raw = flat;
+                }
+            }
+
+            // String input: check ISO or numeric
+            if (typeof raw === 'string') {
+                const trimmed = raw.trim();
+                const iso = Date.parse(trimmed);
+                if (!isNaN(iso)) return new Date(iso).toLocaleString();
+                const num = Number(trimmed);
+                if (!isNaN(num)) raw = num;
+            }
+
+            // Numeric input: determine epoch ms/epoch sec/seconds-ago
+            if (typeof raw === 'number') {
+                const v = raw;
+                // ms epoch
+                if (Math.abs(v) > 1e12) return new Date(v).toLocaleTimeString();
+                // epoch seconds
+                if (Math.abs(v) > 1e9) return new Date(v * 1000).toLocaleTimeString();
+                // small number — treat as seconds-ago relative to now
+                return new Date(Date.now() - v * 1000).toLocaleTimeString();
+            }
+
+            // Fallback: stringify
+            return String(raw);
+        } catch (e) {
+            return 'N/A';
+        }
+    }
+
+    // Simple HTML escape for small values we inject into templates
+    function escapeHtml(str) {
+        return str.replace(/[&<>"'`=\/]/g, function (s) {
+            return ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
+                '`': '&#96;',
+                '=': '&#61;',
+                '/': '&#47;'
+            })[s];
+        });
+    }
+
+</script>
+
+
+
+
+</body>
+
+</html>

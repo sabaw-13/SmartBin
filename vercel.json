@@ -1,0 +1,125 @@
+{
+  "version": 2,
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/html/index.html",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/html",
+      "destination": "/html/index.html"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/html/index.html"
+    },
+    {
+      "source": "/about.html",
+      "destination": "/html/about.html"
+    },
+    {
+      "source": "/reward.html",
+      "destination": "/html/reward.html"
+    },
+    {
+      "source": "/login.html",
+      "destination": "/html/login.html"
+    },
+    {
+      "source": "/signup.html",
+      "destination": "/html/signup.html"
+    },
+    {
+      "source": "/admin_login.html",
+      "destination": "/html/admin_login.html"
+    },
+    {
+      "source": "/admin.html",
+      "destination": "/html/admin.html"
+    },
+    {
+      "source": "/profile.html",
+      "destination": "/html/profile.html"
+    },
+    {
+      "source": "/settings.html",
+      "destination": "/html/settings.html"
+    },
+    {
+      "source": "/index_loggedin.html",
+      "destination": "/html/index_loggedin.html"
+    },
+    {
+      "source": "/about_loggedin.html",
+      "destination": "/html/about_loggedin.html"
+    },
+    {
+      "source": "/reward_loggedin.html",
+      "destination": "/html/reward_loggedin.html"
+    },
+    {
+      "source": "/home",
+      "destination": "/html/index.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/html/about.html"
+    },
+    {
+      "source": "/rewards",
+      "destination": "/html/reward.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/html/login.html"
+    },
+    {
+      "source": "/signup",
+      "destination": "/html/signup.html"
+    },
+    {
+      "source": "/admin-login",
+      "destination": "/html/admin_login.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/html/admin.html"
+    },
+    {
+      "source": "/profile",
+      "destination": "/html/profile.html"
+    },
+    {
+      "source": "/settings",
+      "destination": "/html/settings.html"
+    },
+    {
+      "source": "/logged-in",
+      "destination": "/html/index_loggedin.html"
+    },
+    {
+      "source": "/logged-in/about",
+      "destination": "/html/about_loggedin.html"
+    },
+    {
+      "source": "/logged-in/rewards",
+      "destination": "/html/reward_loggedin.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        }
+      ]
+    }
+  ]
+}

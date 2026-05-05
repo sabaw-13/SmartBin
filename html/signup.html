@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>smartBin | Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" href="../images/bin.webp">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="min-h-screen flex flex-col md:flex-row bg-gray-50">
+    <!-- Left Side (Background Image) -->
+    <div class="hidden md:block w-1/2 relative">
+        <div class="absolute inset-0 bg-cover bg-center"
+            style="background-image: url('https://www.washingtonpost.com/rf/image_908w/2010-2019/WashingtonPost/2013/03/03/National-Economy/Images/161793548-1699.jpg');">
+            <div class="absolute inset-0 bg-gradient-to-br from-green-600/90 to-blue-600/90 mix-blend-multiply"></div>
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center text-white p-12">
+            <div class="max-w-xl text-center">
+                <h2 class="text-4xl font-bold mb-4">Start your eco-friendly journey</h2>
+                <p class="text-lg text-green-100">
+                    Join our community and make a positive impact on the environment
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side (Form) -->
+    <div class="w-full md:w-1/2 flex flex-col min-h-screen bg-white overflow-y-auto">
+        <!-- Navigation -->
+        <nav class="p-4 sm:p-8">
+            <a href="index.html" class="inline-flex items-center text-gray-500 hover:text-green-600 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Back to Home
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col items-center justify-start px-4 sm:px-8 md:px-12 py-6 sm:py-8">
+            <h1 class="text-2xl sm:text-3xl font-bold mb-8 flex items-center">
+                <span class="text-green-600">+</span><span class="text-black">Tech smart</span><span
+                    class="text-green-600">Bin</span>
+            </h1>
+
+            <!-- Sign Up Form -->
+            <form id="signupForm" class="w-full max-w-lg space-y-4">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-semibold mb-1">Create an account</h2>
+                    <p class="text-gray-600">Join us in making a difference!</p>
+                </div>
+
+                <!-- Names -->
+                <div class="space-y-3">
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <div class="relative">
+                            <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="firstName" name="firstName" type="text" required placeholder="First Name"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 focus:ring-2 focus:ring-green-600 focus:border-green-600 outline-none transition-all duration-200">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="middleName" class="block text-sm font-medium text-gray-700 mb-1">Middle Name</label>
+                        <div class="relative">
+                            <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="middleName" name="middleName" type="text" placeholder="Middle Name"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 focus:ring-2 focus:ring-green-600 focus:border-green-600 outline-none transition-all duration-200">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <div class="relative">
+                            <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="lastName" name="lastName" type="text" required placeholder="Last Name"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 focus:ring-2 focus:ring-green-600 focus:border-green-600 outline-none transition-all duration-200">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="studentNumber" class="block text-sm font-medium text-gray-700 mb-1">Contact
+                            Number</label>
+                        <div class="relative">
+                            <i class="fas fa-id-card absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="studentNumber" name="studentNumber" type="text" required
+                                placeholder="Contact Number"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 focus:ring-2 focus:ring-green-600 focus:border-green-600 outline-none transition-all duration-200">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <div class="relative">
+                            <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="email" name="email" type="email" required placeholder="Email"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 focus:ring-2 focus:ring-green-600 focus:border-green-600 outline-none transition-all duration-200">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="password" name="password" type="password" required placeholder="Password"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 focus:ring-2 focus:ring-green-600 focus:border-green-600 outline-none transition-all duration-200">
+                            <button type="button" onclick="togglePassword()"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm
+                            Password</label>
+                        <div class="relative">
+                            <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="confirmPassword" name="confirmPassword" type="password" required
+                                placeholder="Confirm Password"
+                                class="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10 focus:ring-2 focus:ring-green-600 focus:border-green-600 outline-none transition-all duration-200">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div class="flex items-start gap-2 space-y-0 pt-2">
+                    <input type="checkbox" name="terms" required class="mt-1 rounded border-gray-300 text-green-600 focus:ring-green-600"
+                        id="termsCheckbox">
+                    <label for="termsCheckbox" class="text-sm text-gray-600">
+                        I agree to the
+                        <button type="button" onclick="openModal('tosModal')" class="text-green-600 hover:text-green-700 hover:underline">Terms of Service</button>
+                        and
+                        <button type="button" onclick="openModal('privacyModal')" class="text-green-600 hover:text-green-700 hover:underline">Privacy Policy</button>
+                    </label>
+                </div>
+
+                <!-- Sign Up Button -->
+                <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 font-medium shadow-lg">
+                    Create Account
+                </button>
+
+                <p class="text-center text-sm text-gray-600">
+                    Already have an account?
+                    <a href="login.html" class="text-green-600 hover:text-green-700 hover:underline font-medium">Sign in</a>
+                </p>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <footer class="p-4 sm:p-8">
+            <p class="text-sm text-gray-500 text-center">
+                © 2025 smartBin Project | St. Anthony's College, San Jose, Antique
+            </p>
+        </footer>
+    </div>
+
+    <!-- Modals: Terms & Privacy -->
+    <div id="tosModal" class="hidden fixed inset-0 z-50 items-center justify-center">
+        <div class="absolute inset-0 bg-black/50" onclick="closeModal('tosModal')" aria-hidden="true"></div>
+        <div role="dialog" aria-modal="true" aria-labelledby="tosTitle" class="relative w-full max-w-2xl mx-4">
+            <div class="bg-white rounded-lg shadow-lg overflow-y-auto max-h-[80vh]">
+                <div class="flex items-start justify-between p-4 border-b">
+                    <h3 id="tosTitle" class="text-lg font-semibold">Terms of Service</h3>
+                    <button type="button" onclick="closeModal('tosModal')" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-4 space-y-4 text-gray-700">
+                            <p class="text-sm">Last updated: October 2025</p>
+                            <p>
+                                Welcome to +Tech SmartBin. These Terms of Service (“Terms”) govern your use of our website, mobile app, and related services (collectively, the “Services”). By creating an account or using our Services, you agree to these Terms. Please read them carefully before proceeding.
+                            </p>
+
+                            <h4 class="font-semibold">1. Eligibility and Account</h4>
+                            <p>
+                                To use +Tech SmartBin, you must provide accurate and complete information during sign-up. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account.
+                            </p>
+
+                            <h4 class="font-semibold">2. Use of Services</h4>
+                            <p>
+                                +Tech SmartBin provides smart waste monitoring and management tools to improve recycling and waste collection efficiency. You agree not to misuse the Services, attempt unauthorized access, or use the system in a way that interferes with others.
+                            </p>
+
+                            <h4 class="font-semibold">3. User Responsibilities</h4>
+                            <p>
+                                You agree to comply with all applicable laws while using our Services. Any false information, misuse, or unauthorized activity may result in suspension or termination of your account.
+                            </p>
+
+                            <h4 class="font-semibold">4. Data and Content</h4>
+                            <p>
+                                You retain ownership of the data and information you provide. By using our Services, you grant +Tech SmartBin a limited license to use your data for service operation, analytics, and system improvement, in compliance with our Privacy Policy.
+                            </p>
+
+                            <h4 class="font-semibold">5. Service Updates and Availability</h4>
+                            <p>
+                                We may modify, suspend, or discontinue parts of the Services at any time for maintenance, security, or business reasons. We’ll try to notify users of major changes whenever possible.
+                            </p>
+
+                            <h4 class="font-semibold">6. Termination</h4>
+                            <p>
+                                We may suspend or terminate access to your account if you violate these Terms or engage in activities that harm the system, other users, or our operations.
+                            </p>
+
+                            <h4 class="font-semibold">7. Limitation of Liability</h4>
+                            <p>
+                                +Tech SmartBin is provided “as is.” We are not liable for any damages, data loss, or other issues resulting from your use or inability to use the Services.
+                            </p>
+
+                            <h4 class="font-semibold">8. Changes to the Terms</h4>
+                            <p>
+                                We may update these Terms from time to time. Continued use of our Services after updates means you accept the revised Terms.
+                            </p>
+                        </div>
+                <div class="flex justify-end p-4 border-t">
+                    <button type="button" onclick="closeModal('tosModal')" class="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacyModal" class="hidden fixed inset-0 z-50 items-center justify-center">
+        <div class="absolute inset-0 bg-black/50" onclick="closeModal('privacyModal')" aria-hidden="true"></div>
+        <div role="dialog" aria-modal="true" aria-labelledby="privacyTitle" class="relative w-full max-w-2xl mx-4">
+            <div class="bg-white rounded-lg shadow-lg overflow-y-auto max-h-[80vh]">
+                <div class="flex items-start justify-between p-4 border-b">
+                    <h3 id="privacyTitle" class="text-lg font-semibold">Privacy Policy</h3>
+                    <button type="button" onclick="closeModal('privacyModal')" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-4 space-y-4 text-gray-700">
+                            <p class="text-sm">Last updated: October 2025</p>
+                            <p>
+                                Your privacy matters to us. This Privacy Policy explains how +Tech SmartBin collects, uses, and protects your information when you use our Services. By signing up or using our system, you consent to this policy.
+                            </p>
+
+                            <h4 class="font-semibold">1. Information We Collect</h4>
+                            <p>
+                                We collect the following types of data:
+                                <ul class="list-disc ml-6">
+                                    <li><strong>Personal Information:</strong> Name, email address, and other details you provide when creating an account.</li>
+                                    <li><strong>Usage Data:</strong> Information about your activity on the app or website, including timestamps and device data.</li>
+                                    <li><strong>SmartBin Data:</strong> Sensor readings, waste levels, and related environmental data gathered from connected devices.</li>
+                                </ul>
+                            </p>
+
+                            <h4 class="font-semibold">2. How We Use Your Information</h4>
+                            <p>
+                                We use collected data to:
+                                <ul class="list-disc ml-6">
+                                    <li>Operate and improve our smart waste management system.</li>
+                                    <li>Communicate important updates or maintenance notices.</li>
+                                    <li>Ensure system security and prevent misuse.</li>
+                                    <li>Analyze usage trends to enhance user experience and efficiency.</li>
+                                </ul>
+                            </p>
+
+                            <h4 class="font-semibold">3. Data Sharing</h4>
+                            <p>
+                                We do not sell or rent your information. We may share limited data with:
+                                <ul class="list-disc ml-6">
+                                    <li>Service providers who help operate our platform (under confidentiality agreements).</li>
+                                    <li>Local government or partner organizations for waste management reporting, if applicable.</li>
+                                    <li>Law enforcement when required by law.</li>
+                                </ul>
+                            </p>
+
+                            <h4 class="font-semibold">4. Data Security</h4>
+                            <p>
+                                We implement technical and organizational measures to protect your data from unauthorized access, loss, or misuse. However, no system is completely secure, and you use the Services at your own risk.
+                            </p>
+
+                            <h4 class="font-semibold">5. Your Rights</h4>
+                            <p>
+                                You may request access, correction, or deletion of your personal data by contacting us. You can also deactivate your account at any time.
+                            </p>
+
+                            <h4 class="font-semibold">6. Policy Updates</h4>
+                            <p>
+                                We may update this Privacy Policy periodically. Changes will be posted here with a new “Last updated” date. Continued use after changes means you agree to the updated terms.
+                            </p>
+                        </div>
+                <div class="flex justify-end p-4 border-t">
+                    <button type="button" onclick="closeModal('privacyModal')" class="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { auth, db } from "./firebase.js";
+        import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { ref, set } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        const signupForm = document.getElementById("signupForm");
+
+        signupForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const firstName = document.getElementById("firstName").value.trim();
+            const middleName = document.getElementById("middleName").value.trim();
+            const lastName = document.getElementById("lastName").value.trim();
+            const studentNumber = document.getElementById("studentNumber").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+            const terms = document.getElementById("termsCheckbox").checked;
+
+            if (!terms) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Please Accept Terms',
+                    text: 'You must agree to the Terms of Service and Privacy Policy',
+                    confirmButtonColor: '#16a34a'
+                });
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Passwords do not match',
+                    text: 'Please make sure both password fields are identical.',
+                    confirmButtonColor: '#16a34a'
+                });
+                return;
+            }
+
+            const submitButton = signupForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = `<i class="fas fa-circle-notch fa-spin mr-2"></i> Creating Account...`;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                await set(ref(db, "users/" + user.uid), {
+                    firstName,
+                    middleName,
+                    lastName,
+                    studentNumber,
+                    email,
+                    createdAt: new Date().toISOString(),
+                    bottles: 0,
+                    totalWeight: 0
+                });
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Welcome to smartBin!',
+                    text: 'Your account has been created successfully.',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true
+                }).then(() => {
+                    window.location.href = "login.html";
+                });
+
+            } catch (error) {
+                console.error(error.message);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Registration Failed',
+                    text: error.message,
+                    confirmButtonColor: '#16a34a'
+                });
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+            }
+        });
+
+        // Toggle password visibility
+        window.togglePassword = () => {
+            const pwd = document.getElementById("password");
+            pwd.type = pwd.type === "password" ? "text" : "password";
+        };
+        window.toggleConfirmPassword = () => {
+            const pwd = document.getElementById("confirmPassword");
+            pwd.type = pwd.type === "password" ? "text" : "password";
+        };
+
+        // Modal helpers
+        window.openModal = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.remove('hidden');
+            el.classList.add('flex');
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+        };
+        window.closeModal = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.classList.add('hidden');
+            el.classList.remove('flex');
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+        };
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                ['tosModal', 'privacyModal'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && !el.classList.contains('hidden')) closeModal(id);
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

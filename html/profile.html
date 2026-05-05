@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>smartBin | Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="icon" href="../images/bin.webp">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex flex-wrap items-center justify-between gap-3">
+      <a href="index_loggedin.html" class="flex items-center text-gray-800 hover:text-green-600 transition-colors text-sm sm:text-base">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Home
+      </a>
+      <h1 class="text-lg sm:text-xl font-semibold">Profile Settings</h1>
+      <div class="w-6"></div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 py-5 sm:py-8">
+    <div class="max-w-4xl mx-auto">
+      
+      <!-- Profile Header -->
+      <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-6 flex flex-col md:flex-row items-center gap-6">
+        <div class="relative group">
+          <div class="w-32 h-32 rounded-full overflow-hidden">
+            <img id="profilePic" src="../images/user.jpg" alt="Profile Picture" class="w-full h-full object-cover">
+          </div>
+          <button onclick="changeProfilePicture()" 
+                  class="absolute inset-0 bg-black/50 text-white opacity-0 group-hover:opacity-100 
+                         transition-opacity flex items-center justify-center rounded-full">
+            <i class="fas fa-camera"></i>
+          </button>
+        </div>
+        <div class="text-center md:text-left">
+          <h2 id="fullName" class="text-xl sm:text-2xl font-bold mb-2">John Doe</h2>
+          <p id="memberSince" class="text-gray-600 mb-4">Member since August 2025</p>
+          <div class="flex flex-wrap gap-4 justify-center md:justify-start">
+            <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
+              <i class="fas fa-leaf mr-1"></i> Green Warrior
+            </span>
+            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+              <i class="fas fa-recycle mr-1"></i> Active Recycler
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-md p-5 sm:p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Total Weight (g)</h3>
+            <i class="fas fa-weight-scale text-green-500"></i>
+          </div>
+          <p id="totalWeight" class="text-3xl font-bold text-green-600">0</p>
+          <p class="text-sm text-gray-500">Updated in real time</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-5 sm:p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Bottles Recycled</h3>
+            <i class="fas fa-recycle text-green-500"></i>
+          </div>
+          <p id="totalBottles" class="text-3xl font-bold text-green-600">0</p>
+          <p class="text-sm text-gray-500">Updated in real time</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-md p-5 sm:p-6 sm:col-span-2 lg:col-span-1">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold">Rewards Claimed</h3>
+            <i class="fas fa-gift text-purple-500"></i>
+          </div>
+          <p id="rewardsClaimed" class="text-3xl font-bold text-purple-600">0</p>
+          <p class="text-sm text-gray-500">Total claimed</p>
+        </div>
+      </div>
+
+      <!-- Monthly Recycling History -->
+      <div class="bg-white rounded-lg shadow-md p-4 sm:p-6 mb-8">
+        <h3 class="text-xl font-semibold mb-6">Monthly Recycling History</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b-2 border-green-600">
+                <th class="text-left py-3 px-4 font-semibold text-gray-700">Month</th>
+                <th class="text-right py-3 px-4 font-semibold text-gray-700">Bottles</th>
+                <th class="text-right py-3 px-4 font-semibold text-gray-700">Weight (g)</th>
+                <th class="text-right py-3 px-4 font-semibold text-gray-700">Rewards Claimed</th>
+                <th class="text-right py-3 px-4 font-semibold text-gray-700">Rewards Value (g)</th>
+              </tr>
+            </thead>
+            <tbody id="monthlyHistoryTable">
+              <tr class="border-b border-gray-200">
+                <td colspan="5" class="py-4 px-4 text-center text-gray-500">Loading history...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Pagination Controls -->
+        <div class="flex flex-wrap items-center justify-end gap-2 mt-4">
+          <button id="prevPageBtn" onclick="previousPage()" class="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
+            ← Prev
+          </button>
+          <span id="pageInfo" class="text-sm text-gray-600">Page 1</span>
+          <button id="nextPageBtn" onclick="nextPage()" class="px-3 py-1 text-sm bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
+            Next →
+          </button>
+        </div>
+      </div>
+
+      <!-- Profile Form -->
+      <div class="bg-white rounded-lg shadow-md p-4 sm:p-6">
+        <h3 class="text-xl font-semibold mb-6">Personal Information</h3>
+        <form id="profileForm" class="space-y-6" onsubmit="handleProfileUpdate(event)">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+              <input id="inputFullName" type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input id="inputEmail" type="email" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+              <input id="inputPhone" type="tel" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+              <input id="inputLocation" type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-600">
+            </div>
+          </div>
+          <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 sm:space-x-0">
+            <button type="button" onclick="resetForm()" 
+                    class="w-full sm:w-auto px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
+            <button type="submit" 
+                    class="w-full sm:w-auto px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { db } from "./firebase.js";
+    import { ref, get, set, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+    const userId = localStorage.getItem("userId");
+    if (!userId) Swal.fire("❌ Error", "No logged-in user found!", "error");
+
+    const userRef = ref(db, `users/${userId}`);
+
+    const fullNameEl = document.getElementById("fullName");
+    const inputFullName = document.getElementById("inputFullName");
+    const inputEmail = document.getElementById("inputEmail");
+    const inputPhone = document.getElementById("inputPhone");
+    const inputLocation = document.getElementById("inputLocation");
+    const profilePicEl = document.getElementById("profilePic");
+    const totalWeightEl = document.getElementById("totalWeight");
+    const totalBottlesEl = document.getElementById("totalBottles");
+    const rewardsClaimedEl = document.getElementById("rewardsClaimed");
+    const rewardsValueEl = document.getElementById("rewardsValue");
+    const monthlyHistoryTable = document.getElementById("monthlyHistoryTable");
+
+    function formatNumber(n) {
+      return (Math.round(n) || 0).toLocaleString();
+    }
+
+    let allMonthlyRows = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
+    function displayMonthlyPage() {
+      const start = (currentPage - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const pageRows = allMonthlyRows.slice(start, end);
+      
+      console.log("Displaying monthly page. All rows:", allMonthlyRows);
+      console.log("Page rows:", pageRows);
+      
+      if (pageRows.length === 0) {
+        monthlyHistoryTable.innerHTML = '<tr class="border-b border-gray-200"><td colspan="5" class="py-4 px-4 text-center text-gray-500">No recycling data available</td></tr>';
+        return;
+      }
+      
+      monthlyHistoryTable.innerHTML = pageRows.map(row => `
+        <tr class="border-b border-gray-200 hover:bg-green-50 transition">
+          <td class="py-3 px-4 text-gray-800 font-medium">${row.monthName}</td>
+          <td class="py-3 px-4 text-right text-gray-800 font-medium">${row.bottles}</td>
+          <td class="py-3 px-4 text-right text-gray-800 font-medium">${(row.weight).toFixed(2)}</td>
+          <td class="py-3 px-4 text-right text-gray-800 font-medium text-purple-600">${row.rewardsCount}</td>
+          <td class="py-3 px-4 text-right text-gray-800 font-medium text-purple-600">${(row.rewardsValue || 0).toFixed(2)}</td>
+        </tr>
+      `).join('');
+      
+      // Update pagination controls
+      const totalPages = Math.ceil(allMonthlyRows.length / itemsPerPage);
+      document.getElementById("prevPageBtn").disabled = currentPage === 1;
+      document.getElementById("nextPageBtn").disabled = currentPage === totalPages;
+      document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${totalPages}`;
+    }
+
+    window.previousPage = function() {
+      if (currentPage > 1) {
+        currentPage--;
+        displayMonthlyPage();
+      }
+    };
+
+    window.nextPage = function() {
+      const totalPages = Math.ceil(allMonthlyRows.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        displayMonthlyPage();
+      }
+    };
+
+    async function loadMonthlyHistory() {
+      try {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        
+        // Aggregate data by year-month
+        const monthlyMap = {};
+        
+        // Get daily recycling data
+        const dailyRef = ref(db, `users/${userId}/recycling/daily`);
+        const dailySnap = await get(dailyRef);
+        
+        console.log("=== DAILY RECYCLING DATA ===");
+        console.log("Daily Recycling Snapshot exists:", dailySnap.exists());
+        console.log("Daily recycling data keys:", dailySnap.exists() ? Object.keys(dailySnap.val()) : []);
+        console.log("Daily recycling full data:", dailySnap.exists() ? dailySnap.val() : "No data");
+        
+        if (dailySnap.exists()) {
+          const dailyData = dailySnap.val();
+          Object.entries(dailyData).forEach(([dateKey, data]) => {
+            const [y, m, d] = dateKey.split('-').map(Number);
+            const key = `${y}-${String(m).padStart(2, '0')}`;
+            if (!monthlyMap[key]) {
+              monthlyMap[key] = { bottles: 0, weight: 0, binIds: new Set(), rewardsCount: 0, rewardsValue: 0 };
+            }
+            monthlyMap[key].bottles += data.bottles || 0;
+            monthlyMap[key].weight += Math.round((data.weight || 0) * 100) / 100;
+          });
+        }
+        // Get daily rewards claimed from redeemed path
+        const redeemedRef = ref(db, `users/${userId}/redeemed`);
+        const redeemedSnap = await get(redeemedRef);
+        
+        console.log("=== REDEEMED REWARDS DATA ===");
+        console.log("Redeemed Snapshot exists:", redeemedSnap.exists());
+        console.log("User ID:", userId);
+        
+        if (redeemedSnap.exists()) {
+          const fullData = redeemedSnap.val();
+          console.log("Full redeemed object type:", typeof fullData);
+          console.log("Full redeemed object:", fullData);
+          console.log("Redeemed data keys (dates):", Object.keys(fullData));
+          
+          // Check if the data structure is what we expect
+          const firstKey = Object.keys(fullData)[0];
+          if (firstKey) {
+            console.log(`First key: "${firstKey}", First value type:`, typeof fullData[firstKey]);
+            console.log(`First key value:`, fullData[firstKey]);
+          }
+          
+          const redeemedData = fullData;
+          Object.entries(redeemedData).forEach(([dateKey, rewardsArray]) => {
+            console.log(`\n📅 Processing dateKey: "${dateKey}"`);
+            console.log(`Raw dateKey type:`, typeof dateKey);
+            console.log(`Data at this key type:`, typeof rewardsArray);
+            console.log(`Data at this key (isArray: ${Array.isArray(rewardsArray)}):`, rewardsArray);
+            
+            // Check if dateKey is a valid date format
+            if (!dateKey.includes('-')) {
+              console.warn(`⚠️ WARNING: dateKey doesn't contain dashes: "${dateKey}". Might not be a date!`);
+              return; // Skip invalid date keys
+            }
+            
+            const parts = dateKey.split('-');
+            console.log(`Parts after split: [${parts.join(', ')}]`);
+            
+            const [y, m, d] = parts.map(Number);
+            console.log(`Parsed: y=${y}, m=${m}, d=${d}`);
+            
+            if (isNaN(y) || isNaN(m) || isNaN(d)) {
+              console.warn(`⚠️ WARNING: Failed to parse date parts as numbers`);
+              return;
+            }
+            
+            const key = `${y}-${String(m).padStart(2, '0')}`;
+            console.log(`Monthly key: ${key}`);
+            
+            if (!monthlyMap[key]) {
+              monthlyMap[key] = { bottles: 0, weight: 0, binIds: new Set(), rewardsCount: 0, rewardsValue: 0 };
+              console.log(`✅ Created new monthlyMap entry for ${key}`);
+            }
+            
+            // Handle both array and object formats (Firebase converts arrays to objects with numeric keys)
+            let rewardsList = Array.isArray(rewardsArray) ? rewardsArray : Object.values(rewardsArray);
+            console.log(`✅ Processing ${rewardsList.length} rewards for ${dateKey}`);
+            
+            rewardsList.forEach((reward, idx) => {
+              if (!reward) {
+                console.warn(`  ⚠️ Reward ${idx} is null/undefined:`, reward);
+                return;
+              }
+              console.log(`  Reward ${idx}:`, { name: reward.name, weight: reward.weight, status: reward.status });
+              // Only count ACCEPTED rewards
+              if (reward.status === "accepted") {
+                console.log(`  ✅ Counting this reward (status: ${reward.status})`);
+                monthlyMap[key].rewardsCount++;
+                monthlyMap[key].rewardsValue += reward.weight || 0;
+              } else {
+                console.log(`  ⚠️ Skipping reward (status: "${reward.status}}" - not "accepted")`);
+              }
+            });
+          });
+        } else {
+          console.log("⚠️ NO redeemed data found at path:", `users/${userId}/redeemed`);
+        }
+        
+        console.log("\n=== FINAL MONTHLY MAP ===");
+        console.log("Monthly map entries:", Object.keys(monthlyMap).length);
+        Object.entries(monthlyMap).forEach(([key, data]) => {
+          console.log(`${key}: bottles=${data.bottles}, weight=${data.weight.toFixed(2)}, rewards=${data.rewardsCount}, value=${data.rewardsValue.toFixed(2)}`);
+        });
+        
+        // Convert to array and sort by month descending
+        allMonthlyRows = Object.entries(monthlyMap).map(([key, data]) => {
+          const [y, m] = key.split('-').map(Number);
+          const monthDate = new Date(y, m - 1, 1);
+          const monthName = monthDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+          return {
+            key,
+            monthName,
+            date: monthDate,
+            bottles: data.bottles,
+            weight: data.weight,
+            binIds: Array.from(data.binIds),
+            rewardsCount: data.rewardsCount,
+            rewardsValue: data.rewardsValue
+          };
+        });
+        
+        allMonthlyRows.sort((a, b) => b.date - a.date);
+        
+        if (allMonthlyRows.length === 0) {
+          monthlyHistoryTable.innerHTML = '<tr class="border-b border-gray-200"><td colspan="5" class="py-4 px-4 text-center text-gray-500">No recycling data available</td></tr>';
+          return;
+        }
+        
+        // Reset to page 1 and display
+        currentPage = 1;
+        displayMonthlyPage();
+      } catch (err) {
+        console.error('Error loading monthly history:', err);
+        monthlyHistoryTable.innerHTML = '<tr class="border-b border-gray-200"><td colspan="5" class="py-4 px-4 text-center text-red-500">Error loading history</td></tr>';
+      }
+    }
+
+    function loadProfile() {
+      onValue(userRef, snapshot => {
+        if (!snapshot.exists()) return;
+        const data = snapshot.val();
+
+        fullNameEl.textContent = data.fullName || "User";
+        inputFullName.value = data.fullName || "";
+        inputEmail.value = data.email || "";
+        inputPhone.value = data.phone || "";
+        inputLocation.value = data.location || "";
+        profilePicEl.src = data.profilePic || "../images/user.jpg";
+
+        totalWeightEl.textContent = (data.recycling?.totalWeight || 0).toFixed(2);
+        totalBottlesEl.textContent = data.bottles || 0;
+        
+        // Get total accepted rewards from redeemed path
+        get(ref(db, `users/${userId}/redeemed`)).then(redeemedSnap => {
+          let totalAccepted = 0;
+          console.log("Counting rewards from redeemed path...");
+          if (redeemedSnap.exists()) {
+            const redeemedData = redeemedSnap.val();
+            console.log("All redeemed keys:", Object.keys(redeemedData));
+            // Loop through ALL keys
+            Object.entries(redeemedData).forEach(([key, data]) => {
+              console.log(`Key "${key}":`, data);
+              
+              // Check if this IS a reward object (has name and status fields)
+              if (data && typeof data === 'object' && data.name && data.status !== undefined) {
+                // This IS a direct reward object (like keys 4, 5, 6)
+                console.log(`  Direct reward: status="${data.status}"`);
+                if (data.status === "accepted") {
+                  totalAccepted++;
+                  console.log(`  ✅ Counted! Total now: ${totalAccepted}`);
+                }
+              } else if (Array.isArray(data)) {
+                // This is an array of rewards (like under 2025-11-28)
+                console.log(`  Array with ${data.length} rewards`);
+                data.forEach((reward, idx) => {
+                  console.log(`    [${idx}] status="${reward?.status}"`);
+                  if (reward && reward.status === "accepted") {
+                    totalAccepted++;
+                    console.log(`    ✅ Counted! Total now: ${totalAccepted}`);
+                  }
+                });
+              }
+            });
+          }
+          console.log(`Final total accepted: ${totalAccepted}`);
+          rewardsClaimedEl.textContent = totalAccepted;
+        });
+      });
+    }
+
+    window.handleProfileUpdate = async function(e) {
+      e.preventDefault();
+      const snapshot = await get(userRef);
+      if (!snapshot.exists()) return;
+
+      const data = snapshot.val();
+      await set(userRef, {
+        ...data,
+        fullName: inputFullName.value,
+        email: inputEmail.value,
+        phone: inputPhone.value,
+        location: inputLocation.value
+      });
+
+      Swal.fire("✅ Success", "Profile updated successfully!", "success");
+      loadProfile();
+    }
+
+    window.resetForm = function() {
+      loadProfile();
+    }
+
+    loadProfile();
+    loadMonthlyHistory();
+  </script>
+</body>
+</html>
