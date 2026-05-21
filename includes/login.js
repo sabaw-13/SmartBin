@@ -26,17 +26,18 @@ function handleSubmit(event) {
     `;
 
     setTimeout(() => {
-        if (email === "omsim@gmail.com" && password === "password123") {
+        if (email.toLowerCase() === "admin@plustech.com" && password === "admin123!") {
             Swal.fire({
                 icon: 'success',
-                title: 'Welcome back!',
-                text: 'Login successful. Redirecting...',
+                title: 'Admin Login Successful!',
+                text: 'Redirecting to the admin dashboard...',
                 showConfirmButton: false,
                 timer: 1500,
                 timerProgressBar: true
             }).then(() => {
-                // Redirect to dashboard
-                window.location.href = 'index_loggedin.html';
+                localStorage.setItem("userId", "admin");
+                localStorage.setItem("userRole", "admin");
+                window.location.href = 'admin.html';
             });
         } else {
             Swal.fire({

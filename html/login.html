@@ -129,6 +129,8 @@
 
         const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value;
+        const adminEmail = "admin@plustech.com";
+        const adminPassword = "admin123!";
 
         // Validation before Firebase call
         if (!email) {
@@ -178,6 +180,34 @@
             <i class="fas fa-circle-notch fa-spin mr-2"></i>
             Signing in...
         `;
+
+        if (email.toLowerCase() === adminEmail && password === adminPassword) {
+            localStorage.setItem("userId", "admin");
+            localStorage.setItem("userRole", "admin");
+
+            Swal.fire({
+                icon: "success",
+                title: "Admin Login Successful! âœ“",
+                text: "Redirecting to the admin dashboard...",
+                position: "top-end",
+                toast: true,
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#dcfce7',
+                color: '#166534',
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            });
+
+            setTimeout(() => {
+                window.location.href = "admin.html";
+            }, 1500);
+
+            return;
+        }
 
         try {
             // LOGIN USER

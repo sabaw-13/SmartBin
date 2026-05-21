@@ -24,7 +24,7 @@ function handleAdminLogin(event) {
     `;
 
     setTimeout(() => {
-        if (username === "admin" && password === "admin123") {
+        if (username.toLowerCase() === "admin@plustech.com" && password === "admin123!") {
             Swal.fire({
                 icon: 'success',
                 title: 'Welcome Admin!',
